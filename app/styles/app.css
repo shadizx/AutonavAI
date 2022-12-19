@@ -522,14 +522,6 @@ video {
   margin-right: auto;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
-.w-52 {
-  width: 13rem;
-}
-
 .overflow-hidden {
   overflow: hidden;
 }
