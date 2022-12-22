@@ -7,11 +7,11 @@ export default class Car {
   angle: number = 0;
 
   constructor(
-    private x: number,
-    private y: number,
+    public x: number,
+    public y: number,
     private width: number,
     private height: number,
-    private ctx: any,
+    private ctx: CanvasRenderingContext2D,
     readonly ACCELERATION: number = 0.2,
     readonly MAX_SPEED: number = 3,
     readonly FRICTION = 0.05,
