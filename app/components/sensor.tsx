@@ -25,8 +25,22 @@ export default class Sensor {
     for (let i = 0; i < this.rayCount; i++) {
       let end = this.readings[i] ? this.readings[i] : this.rays[i][1];
 
-      this.drawRay(ctx, this.rayColor, this.rays[i][0].x, this.rays[i][0].y, end.x, end.y);
-      this.drawRay(ctx, "black", this.rays[i][1].x, this.rays[i][1].y, end.x, end.y)
+      this.drawRay(
+        ctx,
+        this.rayColor,
+        this.rays[i][0].x,
+        this.rays[i][0].y,
+        end.x,
+        end.y
+      );
+      this.drawRay(
+        ctx,
+        "black",
+        this.rays[i][1].x,
+        this.rays[i][1].y,
+        end.x,
+        end.y
+      );
     }
   }
 
@@ -81,7 +95,7 @@ export default class Sensor {
     let touches = [];
 
     for (let i = 0; i < roadBorders.length; i++) {
-      const touch = this.getIntersection(
+      const touch = getIntersection(
         ray[0],
         ray[1],
         roadBorders[i][0],
@@ -101,35 +115,34 @@ export default class Sensor {
       return touches.find((touch) => touch.offset === minOffset);
     }
   }
+}
 
-  private getIntersection(
-    start: any,
-    end: any,
-    borderStart: any,
-    borderEnd: any
-  ) {
-    const tTop =
-      (borderEnd.x - borderStart.x) * (start.y - borderStart.y) -
-      (borderEnd.y - borderStart.y) * (start.x - borderStart.x);
-    const uTop =
-      (borderStart.y - start.y) * (start.x - end.x) -
-      (borderStart.x - start.x) * (start.y - end.y);
-    const bottom =
-      (borderEnd.y - borderStart.y) * (end.x - start.x) -
-      (borderEnd.x - borderStart.x) * (end.y - start.y);
+export function getIntersection(
+  start: any,
+  end: any,
+  borderStart: any,
+  borderEnd: any
+) {
+  const tTop =
+    (borderEnd.x - borderStart.x) * (start.y - borderStart.y) -
+    (borderEnd.y - borderStart.y) * (start.x - borderStart.x);
+  const uTop =
+    (borderStart.y - start.y) * (start.x - end.x) -
+    (borderStart.x - start.x) * (start.y - end.y);
+  const bottom =
+    (borderEnd.y - borderStart.y) * (end.x - start.x) -
+    (borderEnd.x - borderStart.x) * (end.y - start.y);
 
-    if (bottom != 0) {
-      const t = tTop / bottom;
-      const u = uTop / bottom;
-      if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
-        return {
-          x: interpolate(start.x, end.x, t),
-          y: interpolate(start.y, end.y, t),
-          offset: t,
-        };
-      }
+  if (bottom != 0) {
+    const t = tTop / bottom;
+    const u = uTop / bottom;
+    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+      return {
+        x: interpolate(start.x, end.x, t),
+        y: interpolate(start.y, end.y, t),
+        offset: t,
+      };
     }
-
-    return null;
   }
+  return null;
 }

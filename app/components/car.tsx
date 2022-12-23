@@ -1,12 +1,14 @@
 import KeyHandler from "./key-handler";
-import Sensor from "./sensor";
+import Sensor, { getIntersection } from "./sensor";
 
 export default class Car {
+  shape: Array<any> = [];
   sensor: Sensor;
   keyHandler: KeyHandler;
 
   speed: number = 0;
   angle: number = 0;
+  collided: boolean = false;
 
   constructor(
     public x: number,
@@ -19,26 +21,30 @@ export default class Car {
     readonly FRICTION = 0.05,
     readonly STEERING = 0.03
   ) {
-
     this.sensor = new Sensor(this);
     this.keyHandler = new KeyHandler();
   }
 
   update(roadBorders: Array<object>) {
     this.move();
+    this.shape = this.createShape();
+    this.collided = this.checkCollided(roadBorders);
     this.sensor.update(roadBorders);
   }
 
   draw() {
-    this.ctx.save();
-    this.ctx.translate(this.x, this.y);
-    this.ctx.rotate(-this.angle);
+    this.ctx.fillStyle = this.collided ? "red" : "black";
 
     this.ctx.beginPath();
-    this.ctx.rect(-this.width / 2, -this.height / 2, this.width, this.height);
+    this.ctx.moveTo(this.shape[0].x, this.shape[0].y);
+
+    this.shape.forEach((point, index) => {
+      if (index > 0) {
+        this.ctx.lineTo(point.x, point.y);
+      }
+    });
     this.ctx.fill();
 
-    this.ctx.restore();
     this.sensor.draw(this.ctx);
   }
 
@@ -84,4 +90,50 @@ export default class Car {
     this.x -= Math.sin(this.angle) * this.speed;
     this.y -= Math.cos(this.angle) * this.speed;
   }
+
+  private createShape() {
+    const points: Array<object> = [];
+    const radius = Math.hypot(this.width, this.height) / 2;
+
+    const alpha = Math.atan2(this.width, this.height);
+    this.addPoint(points, this.angle - alpha, radius);
+    this.addPoint(points, this.angle + alpha, radius);
+    this.addPoint(points, Math.PI + this.angle - alpha, radius);
+    this.addPoint(points, Math.PI + this.angle + alpha, radius);
+    return points;
+  }
+
+  private addPoint(points: Array<object>, angle: number, radius: number) {
+    points.push({
+      x: this.x - Math.sin(angle) * radius,
+      y: this.y - Math.cos(angle) * radius,
+    });
+  }
+
+  private checkCollided(roadBorders: Array<any>) {
+    for (let boarder of roadBorders) {
+      if (shapeIntersect(this.shape, boarder)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+export function shapeIntersect(shape1: Array<any>, shape2: Array<any>): boolean {
+  for (let i = 0; i < shape1.length; i++) {
+    for (let j = 0; j < shape2.length; j++) {
+      const intersection = getIntersection(
+        shape1[i],
+        shape1[(i + 1) % shape1.length],
+        shape2[j],
+        shape2[(j + 1) % shape2.length]
+      );
+
+      if (intersection) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
