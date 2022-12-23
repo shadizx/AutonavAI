@@ -1,5 +1,5 @@
 export default class Road {
-  private borders: Array<object> = [];
+  borders: Array<object> = [];
 
   private readonly left: number;
   private readonly right: number;
@@ -24,7 +24,7 @@ export default class Road {
     this.ctx.strokeStyle = "white";
 
     for (let i = 1; i <= this.laneCount - 1; i++) {
-      const x = this.interpolate(this.left, this.right, i / this.laneCount);
+      const x = interpolate(this.left, this.right, i / this.laneCount);
       this.drawLine(x, this.top, x, this.bottom, 20);
     }
 
@@ -51,10 +51,6 @@ export default class Road {
     this.ctx.stroke();
   }
 
-  interpolate(left: number, right: number, percent: number) {
-    return left + (right - left) * percent;
-  }
-
   getLaneCenter(laneIndex: number) {
     const laneWidth = this.width / this.laneCount;
     return (
@@ -76,4 +72,8 @@ export default class Road {
       [bottomRight, topRight],
     ];
   }
+}
+
+export function  interpolate(left: number, right: number, percent: number) {
+  return left + (right - left) * percent;
 }

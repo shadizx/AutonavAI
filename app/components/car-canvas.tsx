@@ -11,11 +11,11 @@ export default function CarCanvas() {
   let road: Road;
 
   const animate = () => {
-    car.update();
+    car.update(road.borders);
     canvas.height = window.innerHeight;
 
     ctx.save();
-    ctx.translate(0, -car.y + canvas.height * 0.7);
+    ctx.translate(0, -car.y + canvas.height * 0.65);
     road.draw();
     car.draw();
 

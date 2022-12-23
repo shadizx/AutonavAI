@@ -1,6 +1,8 @@
 import KeyHandler from "./key-handler";
+import Sensor from "./sensor";
 
 export default class Car {
+  sensor: Sensor;
   keyHandler: KeyHandler;
 
   speed: number = 0;
@@ -17,11 +19,14 @@ export default class Car {
     readonly FRICTION = 0.05,
     readonly STEERING = 0.03
   ) {
+
+    this.sensor = new Sensor(this);
     this.keyHandler = new KeyHandler();
   }
 
-  update() {
+  update(roadBorders: Array<object>) {
     this.move();
+    this.sensor.update(roadBorders);
   }
 
   draw() {
@@ -34,6 +39,7 @@ export default class Car {
     this.ctx.fill();
 
     this.ctx.restore();
+    this.sensor.draw(this.ctx);
   }
 
   private move() {
