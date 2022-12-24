@@ -17,11 +17,15 @@ export default class Sensor {
   }
 
   update(roadBorders: Array<any>) {
+    if (!this.car.isControlledByUser) return;
+
     this.loadRays();
     this.loadReadings(roadBorders);
   }
 
   draw(ctx: CanvasRenderingContext2D) {
+    if (!this.car.isControlledByUser) return;
+
     for (let i = 0; i < this.rayCount; i++) {
       let end = this.readings[i] ? this.readings[i] : this.rays[i][1];
 

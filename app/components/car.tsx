@@ -16,13 +16,14 @@ export default class Car {
     private width: number,
     private height: number,
     private ctx: CanvasRenderingContext2D,
-    readonly ACCELERATION: number = 0.2,
+    readonly isControlledByUser: boolean = false,
     readonly MAX_SPEED: number = 3,
+    readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
     readonly STEERING = 0.03
   ) {
     this.sensor = new Sensor(this);
-    this.keyHandler = new KeyHandler();
+    this.keyHandler = new KeyHandler(this.isControlledByUser);
   }
 
   update(roadBorders: Array<object>) {
