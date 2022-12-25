@@ -26,15 +26,17 @@ export default class Car {
     this.keyHandler = new KeyHandler(this.isControlledByUser);
   }
 
-  update(roadBorders: Array<object>) {
-    this.move();
-    this.shape = this.createShape();
-    this.collided = this.checkCollided(roadBorders);
-    this.sensor.update(roadBorders);
+  update(roadBorders: Array<object>, traffic: Array<Car>) {
+    if (!this.collided) {
+      this.move();
+      this.shape = this.createShape();
+      this.collided = this.checkCollided(roadBorders, traffic);
+    }
+    this.sensor.update(roadBorders, traffic);
   }
 
-  draw() {
-    this.ctx.fillStyle = this.collided ? "red" : "black";
+  draw(carColor: string = "black") {
+    this.ctx.fillStyle = this.collided ? "red" : carColor;
 
     this.ctx.beginPath();
     this.ctx.moveTo(this.shape[0].x, this.shape[0].y);
@@ -111,17 +113,18 @@ export default class Car {
     });
   }
 
-  private checkCollided(roadBorders: Array<any>) {
-    for (let boarder of roadBorders) {
-      if (shapeIntersect(this.shape, boarder)) {
-        return true;
-      }
-    }
-    return false;
+  private checkCollided(roadBorders: any[], traffic: Car[]) {
+    return (
+      roadBorders.some((boarder) => shapeIntersect(this.shape, boarder)) ||
+      traffic.some((car) => shapeIntersect(this.shape, car.shape))
+    );
   }
 }
 
-export function shapeIntersect(shape1: Array<any>, shape2: Array<any>): boolean {
+export function shapeIntersect(
+  shape1: Array<any>,
+  shape2: Array<any>
+): boolean {
   for (let i = 0; i < shape1.length; i++) {
     for (let j = 0; j < shape2.length; j++) {
       const intersection = getIntersection(

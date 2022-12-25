@@ -24,16 +24,16 @@ export default function CarCanvas() {
 
   const animate = () => {
     for (let vehicle of traffic) {
-      vehicle.update(road.borders);
+      vehicle.update(road.borders, []);
     }
-    car.update(road.borders);
+    car.update(road.borders, traffic);
     canvas.height = window.innerHeight;
 
     ctx.save();
     ctx.translate(0, -car.y + canvas.height * 0.65);
     road.draw();
     for (let vehicle of traffic) {
-      vehicle.draw();
+      vehicle.draw("blue");
     }
     car.draw();
 

@@ -16,11 +16,11 @@ export default class Sensor {
     this.readings = [];
   }
 
-  update(roadBorders: Array<any>) {
+  update(roadBorders: Array<any>, traffic: Array<Car>) {
     if (!this.car.isControlledByUser) return;
 
     this.loadRays();
-    this.loadReadings(roadBorders);
+    this.loadReadings(roadBorders, traffic);
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -88,36 +88,34 @@ export default class Sensor {
     }
   }
 
-  private loadReadings(roadBorders: Array<any>) {
-    this.readings = [];
-    for (let i = 0; i < this.rays.length; i++) {
-      this.readings.push(this.getReading(this.rays[i], roadBorders));
-    }
+  private loadReadings(roadBorders: Array<any>, traffic: Array<Car>) {
+    this.readings = this.rays.map((ray) =>
+      this.getReading(ray, roadBorders, traffic)
+    );
   }
 
-  private getReading(ray: any, roadBorders: Array<any>) {
-    let touches = [];
+  private getReading(ray: any, roadBorders: any[], traffic: any[]) {
+    let touches = [
+      ...roadBorders.flatMap(([a, b]) => getIntersection(ray[0], ray[1], a, b)),
+      ...traffic.flatMap((vehicle) =>
+        vehicle.shape.flatMap((a: any, i: number) =>
+          getIntersection(
+            ray[0],
+            ray[1],
+            a,
+            vehicle.shape[(i + 1) % vehicle.shape.length]
+          )
+        )
+      ),
+    ].filter(Boolean);
 
-    for (let i = 0; i < roadBorders.length; i++) {
-      const touch = getIntersection(
-        ray[0],
-        ray[1],
-        roadBorders[i][0],
-        roadBorders[i][1]
-      );
-
-      if (touch) {
-        touches.push(touch);
-      }
-    }
-
-    if (touches.length === 0) {
+    if (!touches.length) {
       return null;
-    } else {
-      const offsets = touches.map((touch) => touch.offset);
-      const minOffset = Math.min(...offsets);
-      return touches.find((touch) => touch.offset === minOffset);
     }
+
+    const offsets = touches.map((touch) => touch.offset);
+    const minOffset = Math.min(...offsets);
+    return touches.find((touch) => touch.offset === minOffset);
   }
 }
 
