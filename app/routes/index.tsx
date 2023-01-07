@@ -1,4 +1,4 @@
-import CarCanvas from "~/components/car-canvas";
+import CarCanvas from "~/components/car/car-canvas";
 
 export default function Index() {
   return (
