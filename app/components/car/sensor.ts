@@ -3,11 +3,11 @@ import { interpolate } from "./road";
 
 export default class Sensor {
   private rays: Array<any>;
-  private readings: Array<any>;
+  public readings: Array<any>;
 
   constructor(
     private car: Car,
-    private rayCount = 5, // number of ray sensors
+    public rayCount = 5, // number of ray sensors
     private rayLength = 150, // how long each ray is in pixels
     private raySpread = Math.PI / 2, // angle that we are going to spread these rays, 45 degrees
     private rayColor = "yellow"
@@ -17,15 +17,11 @@ export default class Sensor {
   }
 
   update(roadBorders: Array<any>, traffic: Array<Car>) {
-    if (!this.car.isControlledByUser) return;
-
     this.loadRays();
     this.loadReadings(roadBorders, traffic);
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    if (!this.car.isControlledByUser) return;
-
     for (let i = 0; i < this.rayCount; i++) {
       let end = this.readings[i] ? this.readings[i] : this.rays[i][1];
 

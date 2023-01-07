@@ -4,13 +4,20 @@ export default class KeyHandler {
   left: boolean;
   right: boolean;
 
-  constructor(isControlledByUser: boolean) {
+  constructor(controlType: string) {
     this.forward = false;
     this.reverse = false;
     this.left = false;
     this.right = false;
 
-    isControlledByUser ? this.addKeyListeners() : (this.forward = true);
+    switch (controlType) {
+      case "KEYS":
+        this.addKeyListeners();
+        break;
+      case "DUMMY":
+        this.forward = true;
+        break;
+    }
   }
 
   addKeyListeners() {

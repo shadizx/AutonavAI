@@ -1,10 +1,17 @@
+import { NeuralNetwork } from "../network/network";
 import KeyHandler from "./key-handler";
 import Sensor, { getIntersection } from "./sensor";
 
 export default class Car {
   shape: Array<any> = [];
-  sensor: Sensor;
+  sensor: Sensor | undefined;
   keyHandler: KeyHandler;
+  // for neural net car
+  brain: NeuralNetwork | undefined;
+  useAI: boolean;
+  readonly hiddenLayers = 6;
+  readonly outputLayers = 4;
+  // for neural net car
 
   speed: number = 0;
   angle: number = 0;
@@ -16,14 +23,22 @@ export default class Car {
     private width: number,
     private height: number,
     private ctx: CanvasRenderingContext2D,
-    readonly isControlledByUser: boolean = false,
+    readonly controlType: string,
     readonly MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
     readonly STEERING = 0.03
   ) {
-    this.sensor = new Sensor(this);
-    this.keyHandler = new KeyHandler(this.isControlledByUser);
+    this.useAI = this.controlType === "AI";
+    if (this.controlType != "dummy") {
+      this.sensor = new Sensor(this);
+      this.brain = new NeuralNetwork([
+        this.sensor.rayCount,
+        this.hiddenLayers,
+        this.outputLayers,
+      ]);
+    }
+    this.keyHandler = new KeyHandler(this.controlType);
   }
 
   update(roadBorders: Array<object>, traffic: Array<Car>) {
@@ -32,7 +47,21 @@ export default class Car {
       this.shape = this.createShape();
       this.collided = this.checkCollided(roadBorders, traffic);
     }
-    this.sensor.update(roadBorders, traffic);
+    if (this.sensor && this.brain) {
+      this.sensor.update(roadBorders, traffic);
+      const offsets = this.sensor.readings.map((reading) =>
+        reading === null ? 0 : 1 - reading.offset
+      );
+      const outputs = NeuralNetwork.feedForward(offsets, this.brain);
+      console.log(outputs);
+
+      if (this.useAI) {
+        this.keyHandler.forward = outputs[0] === 1;
+        this.keyHandler.left = outputs[1] === 1;
+        this.keyHandler.right = outputs[2] === 1;
+        this.keyHandler.reverse = outputs[3] === 1;
+      }
+    }
   }
 
   draw(carColor: string = "black") {
@@ -47,8 +76,9 @@ export default class Car {
       }
     });
     this.ctx.fill();
-
-    this.sensor.draw(this.ctx);
+    if (this.sensor) {
+      this.sensor.draw(this.ctx);
+    }
   }
 
   private move() {
