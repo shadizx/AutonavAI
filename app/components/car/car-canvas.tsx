@@ -42,8 +42,8 @@ export default function CarCanvas() {
 
   return (
     <canvas
-      id="myCanvas"
-      className="bg-slate-400 mx-auto"
+      id="carCanvas"
+      className="bg-slate-400"
       ref={canvasRef}
     ></canvas>
   );
