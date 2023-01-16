@@ -1,3 +1,5 @@
+import { interpolate } from "~/utils/interpolate";
+
 export default class Road {
   borders: Array<object> = [];
 
@@ -72,8 +74,4 @@ export default class Road {
       [bottomRight, topRight],
     ];
   }
-}
-
-export function  interpolate(left: number, right: number, percent: number) {
-  return left + (right - left) * percent;
 }

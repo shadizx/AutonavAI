@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import Visualizer from "../network/visualizer";
 
 export default function NetworkCanvas() {
   const canvasRef = useRef(null);
@@ -15,6 +16,7 @@ export default function NetworkCanvas() {
 
   const animate = () => {
     canvas.height = window.innerHeight;
+    // Visualizer.drawNetwork(ctx, car.brain);
     requestAnimationFrame(animate);
   };
 

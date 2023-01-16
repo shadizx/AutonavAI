@@ -521,17 +521,8 @@ video {
   margin: 0px;
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .inline-block {
   display: inline-block;
-}
-
-.overflow-hidden {
-  overflow: hidden;
 }
 
 .border {
