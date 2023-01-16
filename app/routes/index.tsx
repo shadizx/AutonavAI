@@ -1,5 +1,5 @@
-import CarCanvas from "~/components/car/car-canvas";
-import NetworkCanvas from "~/components/car/network-canvas";
+import CarCanvas from "~/components/Car/car-canvas";
+import NetworkCanvas from "~/components/Car/network-canvas";
 
 export default function Index() {
   return (

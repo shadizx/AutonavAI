@@ -1,4 +1,4 @@
-import { NeuralNetwork } from "../network/network";
+import { NeuralNetwork } from "../Network/network";
 import KeyHandler from "./key-handler";
 import Sensor, { getIntersection } from "./sensor";
 

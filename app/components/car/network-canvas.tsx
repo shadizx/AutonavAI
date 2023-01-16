@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Visualizer from "../network/visualizer";
+import Visualizer from "../Network/visualizer";
 
 export default function NetworkCanvas() {
   const canvasRef = useRef(null);
@@ -21,10 +21,6 @@ export default function NetworkCanvas() {
   };
 
   return (
-    <canvas
-      id="networkCanvas"
-      className="bg-black"
-      ref={canvasRef}
-    ></canvas>
+    <canvas id="networkCanvas" className="bg-black" ref={canvasRef}></canvas>
   );
 }
