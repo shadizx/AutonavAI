@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import Car from "./car";
-import Road from "./road";
+import Car from "./Car";
+import Road from "./Road";
 
 export default function CarCanvas() {
   const canvasRef = useRef(null);
@@ -30,7 +30,7 @@ export default function CarCanvas() {
     canvas.height = window.innerHeight;
 
     ctx.save();
-    ctx.translate(0, -car.y + canvas.height * 0.70);
+    ctx.translate(0, -car.y + canvas.height * 0.7);
     road.draw();
     for (let vehicle of traffic) {
       vehicle.draw("blue");
@@ -41,10 +41,6 @@ export default function CarCanvas() {
   };
 
   return (
-    <canvas
-      id="carCanvas"
-      className="bg-slate-400"
-      ref={canvasRef}
-    ></canvas>
+    <canvas id="carCanvas" className="bg-slate-400" ref={canvasRef}></canvas>
   );
 }

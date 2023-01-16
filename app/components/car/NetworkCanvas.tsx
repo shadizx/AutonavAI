@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Visualizer from "../Network/visualizer";
+import Visualizer from "../AIContainer/Network/Visualizer";
 
 export default function NetworkCanvas() {
   const canvasRef = useRef(null);

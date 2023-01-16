@@ -1,6 +1,6 @@
-import { NeuralNetwork } from "../Network/network";
-import KeyHandler from "./key-handler";
-import Sensor, { getIntersection } from "./sensor";
+import { NeuralNetwork } from "../AIContainer/Network/Network";
+import KeyHandler from "./KeyHandler";
+import Sensor, { getIntersection } from "./Sensor";
 
 export default class Car {
   shape: Array<any> = [];
