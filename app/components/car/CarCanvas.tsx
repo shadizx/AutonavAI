@@ -2,14 +2,19 @@ import { useEffect, useRef } from "react";
 import Car from "./Car";
 import Road from "./Road";
 
-export default function CarCanvas() {
+interface CarCanvasProps {
+  setCar: any;
+}
+
+export default function CarCanvas({ setCar }: CarCanvasProps) {
   const canvasRef = useRef(null);
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
 
-  let car: Car;
+  let car: Car | any = null;
   let road: Road;
   let traffic: Array<Car>;
+  const trafficColor = "blue";
 
   useEffect(() => {
     canvas = canvasRef.current as any;
@@ -20,7 +25,7 @@ export default function CarCanvas() {
     car = new Car(road.getLaneCenter(1), 100, 30, 50, ctx, "AI");
     traffic = [new Car(road.getLaneCenter(1), -100, 30, 50, ctx, "DUMMY", 2)];
     animate();
-  });
+  }, []);
 
   const animate = () => {
     for (let vehicle of traffic) {
@@ -33,14 +38,23 @@ export default function CarCanvas() {
     ctx.translate(0, -car.y + canvas.height * 0.7);
     road.draw();
     for (let vehicle of traffic) {
-      vehicle.draw("blue");
+      vehicle.draw(trafficColor);
     }
     car.draw();
-
+    setCar(car);
     requestAnimationFrame(animate);
   };
 
   return (
-    <canvas id="carCanvas" className="bg-slate-400" ref={canvasRef}></canvas>
+    <div>
+      <div>
+        <canvas
+          id="carCanvas"
+          className="bg-slate-400"
+          ref={canvasRef}
+          onLoad={() => setCar(car)}
+        ></canvas>
+      </div>
+    </div>
   );
 }

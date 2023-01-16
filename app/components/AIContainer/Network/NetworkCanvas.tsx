@@ -1,7 +1,13 @@
 import { useEffect, useRef } from "react";
-import Visualizer from "../AIContainer/Network/Visualizer";
+import { NeuralNetwork } from "./Network";
+import Visualizer from "./Visualizer";
+import Car from "../../Car/Car";
 
-export default function NetworkCanvas() {
+interface NetworkCanvasProps {
+  car: Car;
+}
+
+export default function NetworkCanvas({ car }: NetworkCanvasProps) {
   const canvasRef = useRef(null);
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
@@ -16,7 +22,7 @@ export default function NetworkCanvas() {
 
   const animate = () => {
     canvas.height = window.innerHeight;
-    // Visualizer.drawNetwork(ctx, car.brain);
+    Visualizer.drawNetwork(ctx, car.brain as NeuralNetwork);
     requestAnimationFrame(animate);
   };
 

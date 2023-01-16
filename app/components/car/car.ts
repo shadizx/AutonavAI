@@ -22,7 +22,7 @@ export default class Car {
     public y: number,
     private width: number,
     private height: number,
-    private ctx: CanvasRenderingContext2D,
+    private ctx: CanvasRenderingContext2D | null = null,
     readonly controlType: string,
     readonly MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
@@ -53,7 +53,7 @@ export default class Car {
         reading === null ? 0 : 1 - reading.offset
       );
       const outputs = NeuralNetwork.feedForward(offsets, this.brain);
-      console.log(outputs);
+      // console.log(outputs);
 
       if (this.useAI) {
         this.keyHandler.forward = outputs[0] === 1;
@@ -65,13 +65,15 @@ export default class Car {
   }
 
   draw(carColor: string = "black") {
+    if (!this.ctx) return;
+    
     this.ctx.fillStyle = this.collided ? "red" : carColor;
 
     this.ctx.beginPath();
     this.ctx.moveTo(this.shape[0].x, this.shape[0].y);
 
     this.shape.forEach((point, index) => {
-      if (index > 0) {
+      if (index > 0 && this.ctx) {
         this.ctx.lineTo(point.x, point.y);
       }
     });
