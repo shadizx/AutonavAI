@@ -24,6 +24,7 @@ export default class Car {
     private height: number,
     private ctx: CanvasRenderingContext2D | null = null,
     readonly controlType: string,
+    public carColor: string = "blue",
     readonly MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
@@ -64,10 +65,10 @@ export default class Car {
     }
   }
 
-  draw(carColor: string = "black") {
+  draw() {
     if (!this.ctx) return;
-    
-    this.ctx.fillStyle = this.collided ? "red" : carColor;
+
+    this.ctx.fillStyle = this.collided ? "red" : this.carColor;
 
     this.ctx.beginPath();
     this.ctx.moveTo(this.shape[0].x, this.shape[0].y);

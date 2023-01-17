@@ -20,8 +20,9 @@ export default function NetworkCanvas({ car }: NetworkCanvasProps) {
     animate();
   });
 
-  const animate = () => {
+  const animate = (time: number | any = undefined) => {
     canvas.height = window.innerHeight;
+    ctx.lineDashOffset = -time / 50;
     Visualizer.drawNetwork(ctx, car.brain as NeuralNetwork);
     requestAnimationFrame(animate);
   };

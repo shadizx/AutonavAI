@@ -14,7 +14,7 @@ export default function CarCanvas({ setCar }: CarCanvasProps) {
   let car: Car | any = null;
   let road: Road;
   let traffic: Array<Car>;
-  const trafficColor = "blue";
+  const trafficColor = "black";
 
   useEffect(() => {
     canvas = canvasRef.current as any;
@@ -23,7 +23,18 @@ export default function CarCanvas({ setCar }: CarCanvasProps) {
     ctx = canvas.getContext("2d");
     road = new Road(canvas.width / 2, canvas.width * 0.9, ctx);
     car = new Car(road.getLaneCenter(1), 100, 30, 50, ctx, "AI");
-    traffic = [new Car(road.getLaneCenter(1), -100, 30, 50, ctx, "DUMMY", 2)];
+    traffic = [
+      new Car(
+        road.getLaneCenter(1),
+        -100,
+        30,
+        50,
+        ctx,
+        "DUMMY",
+        trafficColor,
+        2
+      ),
+    ];
     animate();
   }, []);
 
@@ -38,7 +49,7 @@ export default function CarCanvas({ setCar }: CarCanvasProps) {
     ctx.translate(0, -car.y + canvas.height * 0.7);
     road.draw();
     for (let vehicle of traffic) {
-      vehicle.draw(trafficColor);
+      vehicle.draw();
     }
     car.draw();
     setCar(car);

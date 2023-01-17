@@ -5,17 +5,15 @@ import NetworkCanvas from "./Network/NetworkCanvas";
 
 export default function AIContainer() {
   // default car
-  const [car, setCar] = useState(
-    new Car(0, 0, 0, 0, null, "")
-  );
+  const [car, setCar] = useState(new Car(0, 0, 0, 0, null, ""));
 
   return (
     <div>
       <div id="CarCanvas" className="inline-block">
-        {<CarCanvas setCar={setCar} />}
+        <CarCanvas setCar={setCar} />
       </div>
       <div id="NetworkCanvas" className="inline-block">
-        {<NetworkCanvas car={car} />}
+        <NetworkCanvas car={car} />
       </div>
     </div>
   );
