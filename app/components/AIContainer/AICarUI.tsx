@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
-import Car from "./Car";
-import Road from "./Road";
+import Car from "../Car/Car";
+import Road from "../Car/Road";
 
-interface CarCanvasProps {
+interface AICarUIProps {
   setCar: any;
 }
 
-export default function CarCanvas({ setCar }: CarCanvasProps) {
+export default function AICarUI({ setCar }: AICarUIProps) {
   const canvasRef = useRef(null);
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
@@ -57,15 +57,11 @@ export default function CarCanvas({ setCar }: CarCanvasProps) {
   };
 
   return (
-    <div>
-      <div>
-        <canvas
-          id="carCanvas"
-          className="bg-slate-400"
-          ref={canvasRef}
-          onLoad={() => setCar(car)}
-        ></canvas>
-      </div>
-    </div>
+    <canvas
+      id="carCanvas"
+      className="bg-slate-400"
+      ref={canvasRef}
+      onLoad={() => setCar(car)}
+    ></canvas>
   );
 }

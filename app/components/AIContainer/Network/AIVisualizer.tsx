@@ -3,11 +3,11 @@ import { NeuralNetwork } from "./Network";
 import Visualizer from "./Visualizer";
 import Car from "../../Car/Car";
 
-interface NetworkCanvasProps {
+interface AIVisualizerProps {
   car: Car;
 }
 
-export default function NetworkCanvas({ car }: NetworkCanvasProps) {
+export default function AIVisualizer({ car }: AIVisualizerProps) {
   const canvasRef = useRef(null);
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
@@ -28,6 +28,6 @@ export default function NetworkCanvas({ car }: NetworkCanvasProps) {
   };
 
   return (
-    <canvas id="networkCanvas" className="bg-black" ref={canvasRef}></canvas>
+    <canvas id="visualizerCanvas" className="bg-black" ref={canvasRef}></canvas>
   );
 }
