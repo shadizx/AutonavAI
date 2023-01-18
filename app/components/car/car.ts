@@ -1,5 +1,6 @@
 import { NeuralNetwork } from "../AIContainer/Network/Network";
 import KeyHandler from "./KeyHandler";
+import Road from "./Road";
 import Sensor, { getIntersection } from "./Sensor";
 
 export default class Car {
@@ -16,6 +17,7 @@ export default class Car {
   speed: number = 0;
   angle: number = 0;
   collided: boolean = false;
+  collidedCarColor = "#717171";
 
   constructor(
     public x: number,
@@ -24,7 +26,6 @@ export default class Car {
     private height: number,
     private ctx: CanvasRenderingContext2D | null = null,
     readonly controlType: string,
-    public carColor: string = "blue",
     readonly MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
@@ -65,10 +66,10 @@ export default class Car {
     }
   }
 
-  draw() {
+  draw(carColor: string = "black", drawSensor: boolean = false) {
     if (!this.ctx) return;
 
-    this.ctx.fillStyle = this.collided ? "red" : this.carColor;
+    this.ctx.fillStyle = this.collided ? this.collidedCarColor : carColor;
 
     this.ctx.beginPath();
     this.ctx.moveTo(this.shape[0].x, this.shape[0].y);
@@ -79,7 +80,7 @@ export default class Car {
       }
     });
     this.ctx.fill();
-    if (this.sensor) {
+    if (this.sensor && drawSensor) {
       this.sensor.draw(this.ctx);
     }
   }
@@ -154,10 +155,25 @@ export default class Car {
   }
 }
 
-export function shapeIntersect(
+export const generateCars = (
+  road: Road,
+  n: number,
+  ctx: CanvasRenderingContext2D
+): Car[] => {
+  const lane = 1;
+  const speed = 100;
+  const width = 30;
+  const height = 50;
+
+  return Array.from({ length: n }, (_, i) => {
+    return new Car(road.getLaneCenter(lane), speed, width, height, ctx, "AI");
+  });
+};
+
+export const shapeIntersect = (
   shape1: Array<any>,
   shape2: Array<any>
-): boolean {
+): boolean => {
   for (let i = 0; i < shape1.length; i++) {
     for (let j = 0; j < shape2.length; j++) {
       const intersection = getIntersection(
@@ -173,4 +189,4 @@ export function shapeIntersect(
     }
   }
   return false;
-}
+};
