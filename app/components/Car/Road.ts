@@ -1,4 +1,4 @@
-import { interpolate } from "~/utils/interpolate";
+import { interpolate } from "~/utils/Utility";
 
 export default class Road {
   borders: Array<object> = [];
