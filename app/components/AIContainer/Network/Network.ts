@@ -1,3 +1,5 @@
+import { interpolate } from "~/utils/interpolate";
+
 export class NeuralNetwork {
   levels: Level[];
 
@@ -13,6 +15,29 @@ export class NeuralNetwork {
       outputs = Level.feedForward(outputs, network.levels[i]);
     }
     return outputs;
+  }
+
+  static mutate(network: any, randomPercentChange = 1) {
+    console.log(network.levels, "before");
+    network.levels.forEach((level: any) => {
+      for (let i = 0; i < level.biases.length; i++) {
+        level.biases[i] = interpolate(
+          level.biases[i],
+          Math.random() * 2 - 1,
+          randomPercentChange
+        );
+      }
+      for (let i = 0; i < level.weights.length; i++) {
+        for (let j = 0; j < level.weights[i].length; j++) {
+          level.weights[i][j] = interpolate(
+            level.weights[i][j],
+            Math.random() * 2 - 1,
+            randomPercentChange
+          );
+        }
+      }
+    });
+    console.log(network.levels, "after");
   }
 }
 

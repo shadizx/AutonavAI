@@ -1,27 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import Car, { generateCars } from "../Car/Car";
 import Road from "../Car/Road";
+import { NeuralNetwork } from "./Network/Network";
 
 interface AICarUIProps {
   setCar: any;
 }
 
 export default function AICarUI({ setCar }: AICarUIProps) {
-  const [bestCarState, setBestCarState] = useState(
-    new Car(0, 0, 0, 0, null, "")
-  );
+  const [bestBrain, setBestBrain] = useState(new Car(0, 0, 0, 0, null, ""));
 
   const canvasRef = useRef(null);
+  const numberOfCars = 100;
+  const mutationPercent = 0.3;
+  const trafficColor = "red";
+  const parallelCarColors = "#244FFC";
+
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
 
-  const numberOfCars = 100;
-  let cars: Car[] | any = null;
-  let bestCar: Car | any = null;
+  let cars: Car[];
+  let bestCar: Car;
   let road: Road;
   let traffic: Array<Car>;
-  const trafficColor = "red";
-  const parallelCarColors = "#244FFC";
 
   useEffect(() => {
     canvas = canvasRef.current as any;
@@ -31,11 +32,27 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     road = new Road(canvas.width / 2, canvas.width * 0.9, ctx);
     cars = generateCars(road, numberOfCars, ctx);
     bestCar = cars[0];
-    const bestLocalStorageBrain = localStorage.getItem("bestBrain");
-    if (bestLocalStorageBrain) {
-      bestCar.brain = JSON.parse(bestLocalStorageBrain);
+
+    const bestBrainSoFar = localStorage.getItem("bestBrain");
+    if (bestBrainSoFar) {
+      for (let i = 0; i < cars.length; i++) {
+        cars[i].brain = JSON.parse(bestBrainSoFar);
+        if (i != 0) {
+          NeuralNetwork.mutate(cars[i].brain, mutationPercent);
+        }
+      }
     }
-    traffic = [new Car(road.getLaneCenter(1), -100, 30, 50, ctx, "DUMMY", 2)];
+
+    traffic = [
+      new Car(road.getLaneCenter(1), -100, 30, 50, ctx, "DUMMY", 2),
+      new Car(road.getLaneCenter(0), -300, 30, 50, ctx, "DUMMY", 2),
+      new Car(road.getLaneCenter(2), -300, 30, 50, ctx, "DUMMY", 2),
+      new Car(road.getLaneCenter(0), -500, 30, 50, ctx, "DUMMY", 2),
+      new Car(road.getLaneCenter(1), -500, 30, 50, ctx, "DUMMY", 2),
+      new Car(road.getLaneCenter(1), -700, 30, 50, ctx, "DUMMY", 2),
+      new Car(road.getLaneCenter(2), -700, 30, 50, ctx, "DUMMY", 2),
+    ];
+
     animate();
   }, []);
 
@@ -49,7 +66,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     canvas.height = window.innerHeight;
 
     bestCar = findBestCar(cars);
-    setBestCarState(bestCar);
+    setBestBrain(bestCar);
 
     ctx.save();
     ctx.translate(0, -bestCar.y + canvas.height * 0.7);
@@ -73,8 +90,8 @@ export default function AICarUI({ setCar }: AICarUIProps) {
   // TODO: replace with backend storage in the end
   const save = () => {
     console.log("saving car");
-    console.log(bestCarState);
-    localStorage.setItem("bestBrain", JSON.stringify(bestCarState.brain));
+    console.log(bestBrain);
+    localStorage.setItem("bestBrain", JSON.stringify(bestBrain.brain));
   };
 
   const discard = () => {
