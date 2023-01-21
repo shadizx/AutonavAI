@@ -1,6 +1,6 @@
 import { NeuralNetwork } from "../AIContainer/Network/Network";
 import KeyHandler from "./KeyHandler";
-import Road from "./Road";
+import type Road from "./Road";
 import Sensor, { getIntersection } from "./Sensor";
 
 export default class Car {
@@ -32,7 +32,7 @@ export default class Car {
     readonly STEERING = 0.03
   ) {
     this.useAI = this.controlType === "AI";
-    if (this.controlType != "dummy") {
+    if (this.controlType != "DUMMY") {
       this.sensor = new Sensor(this);
       this.brain = new NeuralNetwork([
         this.sensor.rayCount,
@@ -55,7 +55,6 @@ export default class Car {
         reading === null ? 0 : 1 - reading.offset
       );
       const outputs = NeuralNetwork.feedForward(offsets, this.brain);
-      // console.log(outputs);
 
       if (this.useAI) {
         this.keyHandler.forward = outputs[0] === 1;
@@ -68,6 +67,9 @@ export default class Car {
 
   draw(carColor: string = "black", drawSensor: boolean = false) {
     if (!this.ctx) return;
+    if (this.sensor && drawSensor) {
+      this.sensor.draw(this.ctx);
+    }
 
     this.ctx.fillStyle = this.collided ? this.collidedCarColor : carColor;
 
@@ -80,9 +82,6 @@ export default class Car {
       }
     });
     this.ctx.fill();
-    if (this.sensor && drawSensor) {
-      this.sensor.draw(this.ctx);
-    }
   }
 
   private move() {
@@ -155,7 +154,7 @@ export default class Car {
   }
 }
 
-export const generateCars = (
+export const generateAICars = (
   road: Road,
   n: number,
   ctx: CanvasRenderingContext2D

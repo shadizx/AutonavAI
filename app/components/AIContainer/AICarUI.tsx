@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Car, { generateCars } from "../Car/Car";
+import Car, { generateAICars } from "../Car/Car";
 import Road from "../Car/Road";
 import { NeuralNetwork } from "./Network/Network";
 
@@ -8,11 +8,11 @@ interface AICarUIProps {
 }
 
 export default function AICarUI({ setCar }: AICarUIProps) {
-  const [bestBrain, setBestBrain] = useState(new Car(0, 0, 0, 0, null, ""));
+  const [bestBrain, setBestBrain] = useState(new NeuralNetwork([0]));
 
   const canvasRef = useRef(null);
   const numberOfCars = 100;
-  const mutationPercent = 0.3;
+  const mutationPercent = 0.2;
   const trafficColor = "red";
   const parallelCarColors = "#244FFC";
 
@@ -30,7 +30,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
 
     ctx = canvas.getContext("2d");
     road = new Road(canvas.width / 2, canvas.width * 0.9, ctx);
-    cars = generateCars(road, numberOfCars, ctx);
+    cars = generateAICars(road, numberOfCars, ctx);
     bestCar = cars[0];
 
     const bestBrainSoFar = localStorage.getItem("bestBrain");
@@ -57,33 +57,28 @@ export default function AICarUI({ setCar }: AICarUIProps) {
   }, []);
 
   const animate = () => {
-    for (let vehicle of traffic) {
-      vehicle.update(road.borders, []);
-    }
-    for (let car of cars) {
-      car.update(road.borders, traffic);
-    }
+    traffic.forEach((vehicle) => vehicle.update(road.borders, []));
+    cars.forEach((car) => car.update(road.borders, traffic));
+
     canvas.height = window.innerHeight;
 
     bestCar = findBestCar(cars);
-    setBestBrain(bestCar);
+    setCar(bestCar);
+    setBestBrain(bestCar.brain as NeuralNetwork);
 
     ctx.save();
     ctx.translate(0, -bestCar.y + canvas.height * 0.7);
     road.draw();
 
-    traffic.forEach((vehicle) => {
-      vehicle.draw(trafficColor);
-    });
+    traffic.forEach((vehicle) => vehicle.draw(trafficColor));
 
     ctx.globalAlpha = 0.2;
-    for (let i = 1; i < cars.length; i++) {
-      cars[i].draw(parallelCarColors);
-    }
+    cars.forEach((car) => car.draw(parallelCarColors));
+    
     ctx.globalAlpha = 1;
     bestCar.draw("blue", true);
 
-    setCar(bestCar);
+    ctx.restore();
     requestAnimationFrame(animate);
   };
 
@@ -91,7 +86,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
   const save = () => {
     console.log("saving car");
     console.log(bestBrain);
-    localStorage.setItem("bestBrain", JSON.stringify(bestBrain.brain));
+    // localStorage.setItem("bestBrain", JSON.stringify(bestBrain));
   };
 
   const discard = () => {
@@ -128,7 +123,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
 }
 
 // fitness function for genetic algorithm machine learning.
-const findBestCar = (cars: Car[] | any) => {
+const findBestCar = (cars: Car[]) => {
   return cars.reduce((highest: Car, car: Car) =>
     car.y < highest.y ? car : highest
   );

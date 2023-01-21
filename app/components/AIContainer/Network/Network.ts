@@ -18,26 +18,16 @@ export class NeuralNetwork {
   }
 
   static mutate(network: any, randomPercentChange = 1) {
-    console.log(network.levels, "before");
     network.levels.forEach((level: any) => {
-      for (let i = 0; i < level.biases.length; i++) {
-        level.biases[i] = interpolate(
-          level.biases[i],
-          Math.random() * 2 - 1,
-          randomPercentChange
-        );
-      }
-      for (let i = 0; i < level.weights.length; i++) {
-        for (let j = 0; j < level.weights[i].length; j++) {
-          level.weights[i][j] = interpolate(
-            level.weights[i][j],
-            Math.random() * 2 - 1,
-            randomPercentChange
-          );
-        }
-      }
+      level.biases = level.biases.map((bias: number) =>
+        interpolate(bias, Math.random() * 2 - 1, randomPercentChange)
+      );
+      level.weights = level.weights.map((weights: any[]) =>
+        weights.map((weight) =>
+          interpolate(weight, Math.random() * 2 - 1, randomPercentChange)
+        )
+      );
     });
-    console.log(network.levels, "after");
   }
 }
 
@@ -60,19 +50,6 @@ export class Level {
     Level.randomize(this);
   }
 
-  // generate a random neural network to begin with
-  private static randomize(level: Level) {
-    for (let i = 0; i < level.inputs.length; i++) {
-      for (let j = 0; j < level.outputs.length; j++) {
-        level.weights[i][j] = Math.random() * 2 - 1;
-      }
-    }
-
-    for (let i = 0; i < level.biases.length; i++) {
-      level.biases[i] = Math.random() * 2 - 1;
-    }
-  }
-
   static feedForward(inputs: number[], level: Level): number[] {
     level.inputs = [...inputs];
 
@@ -86,5 +63,18 @@ export class Level {
     }
 
     return level.outputs;
+  }
+
+  // generate a random neural network to begin with
+  private static randomize(level: Level) {
+    for (let i = 0; i < level.inputs.length; i++) {
+      for (let j = 0; j < level.outputs.length; j++) {
+        level.weights[i][j] = Math.random() * 2 - 1;
+      }
+    }
+
+    for (let i = 0; i < level.biases.length; i++) {
+      level.biases[i] = Math.random() * 2 - 1;
+    }
   }
 }
