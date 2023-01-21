@@ -18,6 +18,8 @@ export default class Car {
   angle: number = 0;
   collided: boolean = false;
   collidedCarColor = "#717171";
+  image: HTMLImageElement | any;
+  mask: HTMLCanvasElement | any;
 
   constructor(
     public x: number,
@@ -25,6 +27,7 @@ export default class Car {
     private width: number,
     private height: number,
     readonly controlType: string,
+    private color: string = "blue",
     readonly MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
@@ -40,6 +43,9 @@ export default class Car {
       ]);
     }
     this.keyHandler = new KeyHandler(this.controlType);
+    if (typeof window !== "undefined") {
+      this.loadImageAndMask();
+    }
   }
 
   update(roadBorders: Array<object>, traffic: Array<Car>) {
@@ -64,26 +70,33 @@ export default class Car {
     }
   }
 
-  draw(
-    ctx: CanvasRenderingContext2D,
-    carColor: string = "black",
-    drawSensor: boolean = false
-  ) {
+  draw(ctx: CanvasRenderingContext2D, drawSensor: boolean = false) {
     if (this.sensor && drawSensor) {
       this.sensor.draw(ctx);
     }
 
-    ctx.fillStyle = this.collided ? this.collidedCarColor : carColor;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(-this.angle);
 
-    ctx.beginPath();
-    ctx.moveTo(this.shape[0].x, this.shape[0].y);
-
-    this.shape.forEach((point, index) => {
-      if (index > 0 && ctx) {
-        ctx.lineTo(point.x, point.y);
-      }
-    });
-    ctx.fill();
+    if (!this.collided) {
+      ctx.drawImage(
+        this.mask,
+        -this.width / 2,
+        -this.height / 2,
+        this.width,
+        this.height
+      );
+      ctx.globalCompositeOperation = "multiply";
+    }
+    ctx.drawImage(
+      this.image,
+      -this.width / 2,
+      -this.height / 2,
+      this.width,
+      this.height
+    );
+    ctx.restore();
   }
 
   private move() {
@@ -154,13 +167,28 @@ export default class Car {
       traffic.some((car) => shapeIntersect(this.shape, car.shape))
     );
   }
+
+  private loadImageAndMask() {
+    this.image = document.createElement("img");
+    this.image.src = "./assets/Car.png";
+
+    this.mask = document.createElement("canvas");
+    this.mask.width = this.width;
+    this.mask.height = this.height;
+
+    const maskCtx = this.mask.getContext("2d");
+    this.image.onload = () => {
+      maskCtx.fillStyle = this.color;
+      maskCtx.rect(0, 0, this.width, this.height);
+      maskCtx.fill();
+
+      maskCtx.globalCompositeOperation = "destination-atop";
+      maskCtx.drawImage(this.image, 0, 0, this.width, this.height);
+    };
+  }
 }
 
-export const generateAICars = (
-  road: Road,
-  n: number,
-  ctx: CanvasRenderingContext2D
-): Car[] => {
+export const generateAICars = (road: Road, n: number): Car[] => {
   const lane = 1;
   const speed = 100;
   const width = 30;

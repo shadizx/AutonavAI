@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { getRandomColor } from "~/utils/Utility";
 import Car, { generateAICars } from "../Car/Car";
 import Road from "../Car/Road";
 import { NeuralNetwork } from "./Network/Network";
@@ -13,8 +14,6 @@ export default function AICarUI({ setCar }: AICarUIProps) {
   const canvasRef = useRef(null);
   const numberOfCars = 100;
   const mutationPercent = 0.2;
-  const trafficColor = "red";
-  const parallelCarColors = "#244FFC";
 
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
@@ -29,8 +28,8 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     canvas.width = 200;
 
     ctx = canvas.getContext("2d");
-    road = new Road(canvas.width / 2, canvas.width * 0.9, ctx);
-    cars = generateAICars(road, numberOfCars, ctx);
+    road = new Road(canvas.width / 2, canvas.width * 0.9);
+    cars = generateAICars(road, numberOfCars);
     bestCar = cars[0];
 
     const bestBrainSoFar = localStorage.getItem("bestBrain");
@@ -44,13 +43,13 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     }
 
     traffic = [
-      new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2),
-      new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2),
-      new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2),
-      new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 2),
-      new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 2),
-      new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", 2),
-      new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2),
+      new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", getRandomColor(), 2),
+      new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", getRandomColor(), 2),
+      new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", getRandomColor(), 2),
+      new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", getRandomColor(), 2),
+      new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", getRandomColor(), 2),
+      new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", getRandomColor(), 2),
+      new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", getRandomColor(), 2),
     ];
 
     animate();
@@ -68,15 +67,15 @@ export default function AICarUI({ setCar }: AICarUIProps) {
 
     ctx.save();
     ctx.translate(0, -bestCar.y + canvas.height * 0.7);
-    road.draw();
+    road.draw(ctx);
 
-    traffic.forEach((vehicle) => vehicle.draw(ctx, trafficColor));
+    traffic.forEach((vehicle) => vehicle.draw(ctx));
 
     ctx.globalAlpha = 0.2;
-    cars.forEach((car) => car.draw(ctx, parallelCarColors));
+    cars.forEach((car) => car.draw(ctx));
 
     ctx.globalAlpha = 1;
-    bestCar.draw(ctx, "blue", true);
+    bestCar.draw(ctx, true);
 
     ctx.restore();
     requestAnimationFrame(animate);

@@ -13,7 +13,6 @@ export default class Road {
   constructor(
     private x: number,
     private width: number,
-    private ctx: CanvasRenderingContext2D,
     private readonly laneCount: number = 3
   ) {
     this.left = this.x - this.width / 2;
@@ -21,22 +20,23 @@ export default class Road {
     this.loadBorders();
   }
 
-  draw() {
-    this.ctx.lineWidth = 5;
-    this.ctx.strokeStyle = "white";
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "white";
 
     for (let i = 1; i <= this.laneCount - 1; i++) {
       const x = interpolate(this.left, this.right, i / this.laneCount);
-      this.drawLine(x, this.top, x, this.bottom, 20);
+      this.drawLine(ctx, x, this.top, x, this.bottom, 20);
     }
 
-    this.ctx.setLineDash([]);
+    ctx.setLineDash([]);
     this.borders.forEach((border: any) => {
-      this.drawLine(border[0].x, border[0].y, border[1].x, border[1].y);
+      this.drawLine(ctx, border[0].x, border[0].y, border[1].x, border[1].y);
     });
   }
 
   drawLine(
+    ctx: CanvasRenderingContext2D,
     x1: number,
     y1: number,
     x2: number,
@@ -44,13 +44,13 @@ export default class Road {
     dashLength: number = 0
   ) {
     dashLength != 0
-      ? this.ctx.setLineDash([dashLength, dashLength])
-      : this.ctx.setLineDash([]);
+      ? ctx.setLineDash([dashLength, dashLength])
+      : ctx.setLineDash([]);
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(x1, y1);
-    this.ctx.lineTo(x2, y2);
-    this.ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
   }
 
   getLaneCenter(laneIndex: number) {
