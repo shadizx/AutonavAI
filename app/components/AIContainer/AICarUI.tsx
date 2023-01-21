@@ -44,13 +44,13 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     }
 
     traffic = [
-      new Car(road.getLaneCenter(1), -100, 30, 50, ctx, "DUMMY", 2),
-      new Car(road.getLaneCenter(0), -300, 30, 50, ctx, "DUMMY", 2),
-      new Car(road.getLaneCenter(2), -300, 30, 50, ctx, "DUMMY", 2),
-      new Car(road.getLaneCenter(0), -500, 30, 50, ctx, "DUMMY", 2),
-      new Car(road.getLaneCenter(1), -500, 30, 50, ctx, "DUMMY", 2),
-      new Car(road.getLaneCenter(1), -700, 30, 50, ctx, "DUMMY", 2),
-      new Car(road.getLaneCenter(2), -700, 30, 50, ctx, "DUMMY", 2),
+      new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2),
+      new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2),
+      new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2),
+      new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 2),
+      new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 2),
+      new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", 2),
+      new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2),
     ];
 
     animate();
@@ -70,13 +70,13 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     ctx.translate(0, -bestCar.y + canvas.height * 0.7);
     road.draw();
 
-    traffic.forEach((vehicle) => vehicle.draw(trafficColor));
+    traffic.forEach((vehicle) => vehicle.draw(ctx, trafficColor));
 
     ctx.globalAlpha = 0.2;
-    cars.forEach((car) => car.draw(parallelCarColors));
-    
+    cars.forEach((car) => car.draw(ctx, parallelCarColors));
+
     ctx.globalAlpha = 1;
-    bestCar.draw("blue", true);
+    bestCar.draw(ctx, "blue", true);
 
     ctx.restore();
     requestAnimationFrame(animate);

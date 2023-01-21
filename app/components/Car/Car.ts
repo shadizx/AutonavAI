@@ -24,7 +24,6 @@ export default class Car {
     public y: number,
     private width: number,
     private height: number,
-    private ctx: CanvasRenderingContext2D | null = null,
     readonly controlType: string,
     readonly MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
@@ -65,23 +64,26 @@ export default class Car {
     }
   }
 
-  draw(carColor: string = "black", drawSensor: boolean = false) {
-    if (!this.ctx) return;
+  draw(
+    ctx: CanvasRenderingContext2D,
+    carColor: string = "black",
+    drawSensor: boolean = false
+  ) {
     if (this.sensor && drawSensor) {
-      this.sensor.draw(this.ctx);
+      this.sensor.draw(ctx);
     }
 
-    this.ctx.fillStyle = this.collided ? this.collidedCarColor : carColor;
+    ctx.fillStyle = this.collided ? this.collidedCarColor : carColor;
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.shape[0].x, this.shape[0].y);
+    ctx.beginPath();
+    ctx.moveTo(this.shape[0].x, this.shape[0].y);
 
     this.shape.forEach((point, index) => {
-      if (index > 0 && this.ctx) {
-        this.ctx.lineTo(point.x, point.y);
+      if (index > 0 && ctx) {
+        ctx.lineTo(point.x, point.y);
       }
     });
-    this.ctx.fill();
+    ctx.fill();
   }
 
   private move() {
@@ -165,7 +167,7 @@ export const generateAICars = (
   const height = 50;
 
   return Array.from({ length: n }, (_, i) => {
-    return new Car(road.getLaneCenter(lane), speed, width, height, ctx, "AI");
+    return new Car(road.getLaneCenter(lane), speed, width, height, "AI");
   });
 };
 
