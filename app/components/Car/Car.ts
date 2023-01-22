@@ -188,17 +188,6 @@ export default class Car {
   }
 }
 
-export const generateAICars = (road: Road, n: number): Car[] => {
-  const lane = 1;
-  const speed = 100;
-  const width = 30;
-  const height = 50;
-
-  return Array.from({ length: n }, (_, i) => {
-    return new Car(road.getLaneCenter(lane), speed, width, height, "AI");
-  });
-};
-
 export const shapeIntersect = (
   shape1: Array<any>,
   shape2: Array<any>

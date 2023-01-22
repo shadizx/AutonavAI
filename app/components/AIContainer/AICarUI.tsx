@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { getRandomColor } from "~/utils/Utility";
-import Car, { generateAICars } from "../Car/Car";
+import Car from "../Car/Car";
+import { generateAICars, generateTrafficRows } from "../Car/CarGenerator";
 import Road from "../Car/Road";
 import { NeuralNetwork } from "./Network/Network";
 
@@ -42,15 +42,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
       }
     }
 
-    traffic = [
-      new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", getRandomColor(), 2),
-      new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", getRandomColor(), 2),
-      new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", getRandomColor(), 2),
-      new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", getRandomColor(), 2),
-      new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", getRandomColor(), 2),
-      new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", getRandomColor(), 2),
-      new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", getRandomColor(), 2),
-    ];
+    traffic = generateTrafficRows(["010", "101", "110", "011"], road);
 
     animate();
   }, []);
@@ -64,6 +56,10 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     bestCar = findBestCar(cars);
     setCar(bestCar);
     setBestBrain(bestCar.brain as NeuralNetwork);
+
+    /*
+      need to check if the bestCar got further than the storage bestCar 
+    */
 
     ctx.save();
     ctx.translate(0, -bestCar.y + canvas.height * 0.7);
