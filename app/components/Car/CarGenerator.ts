@@ -9,17 +9,21 @@ const laneLookup: { [row: string]: number | number[] } = {
   "100": 0,
   "010": 1,
   "001": 2,
-  "110": [0,1],
-  "011": [1,2],
-  "101": [0,2],
+  "110": [0, 1],
+  "011": [1, 2],
+  "101": [0, 2],
 };
 
-export const generateAICars = (road: Road, n: number): Car[] => {
+export const generateCars = (
+  road: Road,
+  n: number,
+  controlType: string = "AI"
+): Car[] => {
   const lane = 1;
   const speed = 100;
 
   return Array.from({ length: n }, (_, i) => {
-    return new Car(road.getLaneCenter(lane), speed, width, height, "AI");
+    return new Car(road.getLaneCenter(lane), speed, width, height, controlType);
   });
 };
 
@@ -34,14 +38,30 @@ export const generateTrafficRows = (
   trafficHash.forEach((row) => {
     const lanes = laneLookup[row];
     if (Array.isArray(lanes)) {
-      lanes.forEach(lane => {
+      lanes.forEach((lane) => {
         trafficRows.push(
-          new Car(road.getLaneCenter(lane), rowY, 30, 50, "DUMMY", getRandomColor(), 2)
-        )
+          new Car(
+            road.getLaneCenter(lane),
+            rowY,
+            30,
+            50,
+            "DUMMY",
+            getRandomColor(),
+            2
+          )
+        );
       });
     } else {
       trafficRows.push(
-        new Car(road.getLaneCenter(lanes), rowY, 30, 50, "DUMMY", getRandomColor(), 2)
+        new Car(
+          road.getLaneCenter(lanes),
+          rowY,
+          30,
+          50,
+          "DUMMY",
+          getRandomColor(),
+          2
+        )
       );
     }
     rowY -= rowIncrement;

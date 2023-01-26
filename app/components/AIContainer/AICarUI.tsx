@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Car from "../Car/Car";
-import { generateAICars, generateTrafficRows } from "../Car/CarGenerator";
+import { generateCars, generateTrafficRows } from "../Car/CarGenerator";
 import Road from "../Car/Road";
 import { NeuralNetwork } from "./Network/Network";
 
@@ -30,7 +30,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
 
     ctx = canvas.getContext("2d");
     road = new Road(canvas.width / 2, canvas.width * 0.9);
-    cars = generateAICars(road, numberOfCars);
+    cars = generateCars(road, numberOfCars);
     bestCar = cars[0];
 
     const bestBrainSoFar = localStorage.getItem("bestBrain");
