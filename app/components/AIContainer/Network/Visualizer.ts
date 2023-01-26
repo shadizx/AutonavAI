@@ -3,7 +3,6 @@ import { Level, NeuralNetwork } from "./Network";
 
 export default class Visualizer {
   static readonly margin = 50;
-  readonly connectionColor = "orange";
 
   static drawNetwork(ctx: CanvasRenderingContext2D, network: NeuralNetwork) {
     const left = Visualizer.margin;
@@ -24,8 +23,7 @@ export default class Visualizer {
         );
 
       ctx.setLineDash([7, 3]);
-      const outputLabels =
-        i === levels.length - 1 ? ["\u2b06", "\u2b05", "\u2b95", "\u2b07"] : [];
+      const outputLabels = i === levels.length - 1 ? ["\u2b05", "\u2b95"] : [];
 
       Visualizer.drawLevel(
         ctx,

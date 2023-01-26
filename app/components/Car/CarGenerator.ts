@@ -23,7 +23,7 @@ export const generateCars = (
   const speed = 100;
 
   return Array.from({ length: n }, (_, i) => {
-    return new Car(road.getLaneCenter(lane), speed, width, height, controlType);
+    return new Car(road.getLaneCenter(lane), speed, width, height, controlType, i);
   });
 };
 
@@ -46,6 +46,7 @@ export const generateTrafficRows = (
             30,
             50,
             "DUMMY",
+            -1,
             getRandomColor(),
             2
           )
@@ -59,6 +60,7 @@ export const generateTrafficRows = (
           30,
           50,
           "DUMMY",
+          -1,
           getRandomColor(),
           2
         )

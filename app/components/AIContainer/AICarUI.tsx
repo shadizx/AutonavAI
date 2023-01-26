@@ -13,8 +13,8 @@ export default function AICarUI({ setCar }: AICarUIProps) {
   const [isSelfLearn, setSelfLearn] = useState(false);
 
   const canvasRef = useRef(null);
-  const numberOfCars = 50;
-  const mutationPercent = 0.2;
+  const numberOfCars = 100;
+  const mutationPercent = 0.1;
 
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
@@ -23,14 +23,18 @@ export default function AICarUI({ setCar }: AICarUIProps) {
   let bestCar: Car;
   let road: Road;
   let traffic: Array<Car>;
+  let countdown = 1100;
+  let carsCollided = 0;
 
   useEffect(() => {
-    canvas = canvasRef.current as any;
+    canvas = canvasRef.current;
     canvas.width = 200;
 
     ctx = canvas.getContext("2d");
     road = new Road(canvas.width / 2, canvas.width * 0.9);
+    traffic = generateTrafficRows(["010", "101", "110", "011"], road);
     cars = generateCars(road, numberOfCars);
+    // cars = generateCars(road, 1, "KEYS");
     bestCar = cars[0];
 
     const bestBrainSoFar = localStorage.getItem("bestBrain");
@@ -42,26 +46,29 @@ export default function AICarUI({ setCar }: AICarUIProps) {
         }
       }
     }
-
-    traffic = generateTrafficRows(["010", "101", "110", "011"], road);
-
     animate();
   }, []);
 
   const animate = () => {
+    countdown -= 1;
+    if (countdown < 0) {
+      toggleMachineLearning();
+      window.location.reload();
+    }
     traffic.forEach((vehicle) => vehicle.update(road.borders, []));
-    cars.forEach((car) => car.update(road.borders, traffic));
-
+    carsCollided = 0;
+    cars.forEach((car) => {
+      car.update(road.borders, traffic);
+      carsCollided += car.collided ? 1 : 0;
+      if (carsCollided === numberOfCars) {
+        window.location.reload();
+      }
+    });
     canvas.height = window.innerHeight;
 
     bestCar = findBestCar(cars);
     setCar(bestCar);
     setStoredBestCar(bestCar);
-
-    /*
-      need to check if the bestCar got further than the storage bestCar 
-    */
-    // autoUpdateStoredBestCar();
 
     ctx.save();
     ctx.translate(0, -bestCar.y + canvas.height * 0.7);
@@ -73,6 +80,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
     cars.forEach((car) => car.draw(ctx));
 
     ctx.globalAlpha = 1;
+    console.log(bestCar);
     bestCar.draw(ctx, true);
 
     ctx.restore();
@@ -80,20 +88,34 @@ export default function AICarUI({ setCar }: AICarUIProps) {
   };
 
   // TODO: replace with backend storage in the end
-  const save = () => {
-    console.log("saving car");
-    console.log(storedBestCar.brain);
-    // localStorage.setItem("bestBrain", JSON.stringify(storedBestCar.brain));
-    // localStorage.setItem("bestBrainDistance", storedBestCar.y)
+  const save = (car: Car) => {
+    localStorage.setItem("bestBrain", JSON.stringify(car.brain));
+    localStorage.setItem("bestBrainDistance", car.y.toString());
   };
 
   const discard = () => {
     console.log("deleting bestbrain");
     localStorage.removeItem("bestBrain");
+    localStorage.removeItem("bestBrainDistance");
   };
 
   const handleChange = (event: any) => {
     setSelfLearn((current) => !current);
+  };
+
+  const toggleMachineLearning = () => {
+    const bestBrainSoFar = localStorage.getItem("bestBrain");
+    if (!bestBrainSoFar) {
+      save(bestCar);
+    } else {
+      const storageBestDistance = localStorage.getItem("bestBrainDistance");
+      const bestDistance =
+        storageBestDistance === null ? 100 : parseFloat(storageBestDistance);
+
+      if (bestCar.y < bestDistance) {
+        save(bestCar);
+      }
+    }
   };
 
   return (
@@ -133,7 +155,6 @@ export default function AICarUI({ setCar }: AICarUIProps) {
               "bg-blue-500 py-1 px-2 m-2 rounded " +
               (isSelfLearn ? "opacity-50 cursor-default" : "hover:bg-blue-700")
             }
-            onClick={save}
           >
             💾
           </button>
@@ -154,7 +175,7 @@ export default function AICarUI({ setCar }: AICarUIProps) {
 }
 
 // fitness function for genetic algorithm machine learning.
-const findBestCar = (cars: Car[]) => {
+const findBestCar = (cars: Car[]): Car => {
   return cars.reduce((highest: Car, car: Car) =>
     car.y < highest.y ? car : highest
   );

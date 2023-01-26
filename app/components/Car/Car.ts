@@ -1,6 +1,5 @@
 import { NeuralNetwork } from "../AIContainer/Network/Network";
 import KeyHandler from "./KeyHandler";
-import type Road from "./Road";
 import Sensor, { getIntersection } from "./Sensor";
 
 export default class Car {
@@ -10,8 +9,8 @@ export default class Car {
   // for neural net car
   brain: NeuralNetwork | undefined;
   useAI: boolean;
-  readonly hiddenLayers = 6;
-  readonly outputLayers = 4;
+  private readonly hiddenLayers = 6;
+  private readonly outputLayers = 2;
   // for neural net car
 
   speed: number = 0;
@@ -27,6 +26,7 @@ export default class Car {
     private width: number,
     private height: number,
     readonly controlType: string,
+    public AICarNumber: number = -1,
     private color: string = "blue",
     readonly MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
@@ -34,6 +34,7 @@ export default class Car {
     readonly STEERING = 0.03
   ) {
     this.useAI = this.controlType === "AI";
+    this.keyHandler = new KeyHandler(this.controlType);
     if (this.controlType != "DUMMY") {
       this.sensor = new Sensor(this);
       this.brain = new NeuralNetwork([
@@ -42,7 +43,6 @@ export default class Car {
         this.outputLayers,
       ]);
     }
-    this.keyHandler = new KeyHandler(this.controlType);
     if (typeof window !== "undefined") {
       this.loadImageAndMask();
     }
@@ -62,10 +62,10 @@ export default class Car {
       const outputs = NeuralNetwork.feedForward(offsets, this.brain);
 
       if (this.useAI) {
-        this.keyHandler.forward = outputs[0] === 1;
-        this.keyHandler.left = outputs[1] === 1;
-        this.keyHandler.right = outputs[2] === 1;
-        this.keyHandler.reverse = outputs[3] === 1;
+        this.keyHandler.forward = true; // override forward control for AI car
+        this.keyHandler.left = outputs[0] === 1;
+        this.keyHandler.right = outputs[1] === 1;
+        // this.keyHandler.reverse = outputs[3] === 1;
       }
     }
   }
