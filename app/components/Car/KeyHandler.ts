@@ -21,6 +21,7 @@ export default class KeyHandler {
   }
 
   addKeyListeners() {
+    if (typeof window === "undefined") return;
     document.onkeydown = (event) => {
       switch (event.key) {
         case "ArrowLeft":

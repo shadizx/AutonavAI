@@ -20,10 +20,10 @@ export const generateCars = (
   controlType: string = "AI"
 ): Car[] => {
   const lane = 1;
-  const speed = 100;
+  const y = 100;
 
   return Array.from({ length: n }, (_, i) => {
-    return new Car(road.getLaneCenter(lane), speed, width, height, controlType, i);
+    return new Car(road.getLaneCenter(lane), y, width, height, controlType, i);
   });
 };
 

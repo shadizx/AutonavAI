@@ -35,7 +35,7 @@ export default class Car {
   ) {
     this.useAI = this.controlType === "AI";
     this.keyHandler = new KeyHandler(this.controlType);
-    if (this.controlType != "DUMMY") {
+    if (this.controlType !== "DUMMY") {
       this.sensor = new Sensor(this);
       this.brain = new NeuralNetwork([
         this.sensor.rayCount,

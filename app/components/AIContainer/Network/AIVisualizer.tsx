@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import { NeuralNetwork } from "./Network";
 import Visualizer from "./Visualizer";
-import Car from "../../Car/Car";
+import AICarController from "../AICarController";
 
 interface AIVisualizerProps {
-  car: Car;
+  carController: AICarController;
 }
 
-export default function AIVisualizer({ car }: AIVisualizerProps) {
+export default function AIVisualizer({ carController }: AIVisualizerProps) {
   const canvasRef = useRef(null);
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
@@ -23,7 +23,7 @@ export default function AIVisualizer({ car }: AIVisualizerProps) {
   const animate = (time: number | any = undefined) => {
     canvas.height = window.innerHeight;
     ctx.lineDashOffset = -time / 50;
-    Visualizer.drawNetwork(ctx, car.brain as NeuralNetwork);
+    Visualizer.drawNetwork(ctx, carController.bestCar.brain as NeuralNetwork);
     requestAnimationFrame(animate);
   };
 

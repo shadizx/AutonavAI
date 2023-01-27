@@ -1,19 +1,18 @@
 import { useState } from "react";
-import Car from "../Car/Car";
+import AICarController from "./AICarController";
 import AICarUI from "./AICarUI";
 import AIVisualizer from "./Network/AIVisualizer";
 
 export default function AIContainer() {
-  // initialize default car
-  const [car, setCar] = useState(new Car(0, 0, 0, 0, ""));
+  const [carController, setCarController] = useState(new AICarController());
 
   return (
     <div className="flex">
       <div id="AICarUI" className="">
-        <AICarUI setCar={setCar} />
+        <AICarUI carController={carController} />
       </div>
       <div id="AIVisualizer" className="">
-        <AIVisualizer car={car} />
+        <AIVisualizer carController={carController} />
       </div>
     </div>
   );
