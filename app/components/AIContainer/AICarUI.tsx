@@ -13,6 +13,7 @@ export default function AICarUI({ carController }: AICarControllerProps) {
   useEffect(() => {
     canvas = canvasRef.current;
     canvas.width = 200;
+    canvas.height = 700;
 
     ctx = canvas.getContext("2d");
     animate();
@@ -34,8 +35,8 @@ export default function AICarUI({ carController }: AICarControllerProps) {
   );
 
   const animate = useCallback(() => {
-    canvas.height = window.innerHeight;
     carController.update();
+    canvas.height = window.innerHeight * (2 / 3);
 
     ctx.translate(0, -carController.bestCar.y + canvas.height * 0.7);
     drawUIElements();

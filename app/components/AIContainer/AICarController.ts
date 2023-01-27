@@ -11,6 +11,7 @@ export default class AICarController {
   carsCollided = 0;
   countdownStart = 1100;
   countdown = this.countdownStart;
+  generation: number = 0;
 
   constructor(
     private carControlType: string = "AI",
@@ -97,6 +98,8 @@ export default class AICarController {
     this.cars.forEach((car) => car.update(this.road.borders, this.traffic));
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
     this.countdown = this.countdownStart;
+    if (this.carControlType === "AI") this.loadBrains();
+    this.generation += 1;
   }
 
   update() {

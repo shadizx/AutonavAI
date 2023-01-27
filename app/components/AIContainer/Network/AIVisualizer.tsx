@@ -21,7 +21,7 @@ export default function AIVisualizer({ carController }: AIVisualizerProps) {
   }, []);
 
   const animate = (time: number | any = undefined) => {
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight * (2 / 3);
     ctx.lineDashOffset = -time / 50;
     Visualizer.drawNetwork(ctx, carController.bestCar.brain as NeuralNetwork);
     requestAnimationFrame(animate);
