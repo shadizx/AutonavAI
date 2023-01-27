@@ -9,14 +9,14 @@ export default class AICarController {
   road: Road;
   traffic: Array<Car>;
   carsCollided = 0;
-  countdownStart = 1100;
+  countdownStart = 1000;
   countdown = this.countdownStart;
   generation: number = 0;
 
   constructor(
     private carControlType: string = "AI",
-    private numberOfCars: number = 150,
-    canvasWidth: number = 200,
+    private numberOfCars: number = 100,
+    private canvasWidth: number = 200,
     private readonly mutationPercent: number = 0.1,
     private trafficRows: string[] = ["010", "101", "110", "011"]
   ) {
@@ -91,9 +91,10 @@ export default class AICarController {
 
   resetCars() {
     console.log("resetting");
-    this.traffic = generateTrafficRows(this.trafficRows, this.road);
+    this.road = new Road(this.canvasWidth / 2, this.canvasWidth * 0.9);
     this.cars = generateCars(this.road, this.numberOfCars, this.carControlType);
     this.bestCar = this.findBestCar();
+    this.traffic = generateTrafficRows(this.trafficRows, this.road);
 
     this.cars.forEach((car) => car.update(this.road.borders, this.traffic));
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));

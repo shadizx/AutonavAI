@@ -45,7 +45,11 @@ export default function AICarUI({ carController }: AICarControllerProps) {
 
   return (
     <div className="flex">
-      <canvas id="carCanvas" className="bg-slate-400" ref={canvasRef}></canvas>
+      <canvas
+        id="carCanvas"
+        className="bg-slate-700 rounded-2xl shadow-2xl"
+        ref={canvasRef}
+      ></canvas>
     </div>
   );
 }

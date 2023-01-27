@@ -8,10 +8,10 @@ export default function AIContainer() {
 
   return (
     <div className="flex">
-      <div id="AICarUI" className="">
+      <div id="AICarUI" className="mx-2">
         <AICarUI carController={carController} />
       </div>
-      <div id="AIVisualizer" className="">
+      <div id="AIVisualizer" className="mx-2">
         <AIVisualizer carController={carController} />
       </div>
     </div>

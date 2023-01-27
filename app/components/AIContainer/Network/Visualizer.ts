@@ -3,6 +3,9 @@ import { Level, NeuralNetwork } from "./Network";
 
 export default class Visualizer {
   static readonly margin = 50;
+  static readonly gray = "#334155";
+  static readonly leftArrow = "\u2b05";
+  static readonly rightArrow = "\u2b95";
 
   static drawNetwork(ctx: CanvasRenderingContext2D, network: NeuralNetwork) {
     const left = Visualizer.margin;
@@ -12,7 +15,6 @@ export default class Visualizer {
 
     const { levels } = network;
     const levelHeight = height / levels.length;
-
     for (let i = levels.length - 1; i >= 0; i--) {
       const levelTop =
         top +
@@ -23,7 +25,10 @@ export default class Visualizer {
         );
 
       ctx.setLineDash([7, 3]);
-      const outputLabels = i === levels.length - 1 ? ["\u2b05", "\u2b95"] : [];
+      const outputLabels =
+        i === levels.length - 1
+          ? [Visualizer.leftArrow, Visualizer.rightArrow]
+          : [];
 
       Visualizer.drawLevel(
         ctx,
@@ -32,7 +37,8 @@ export default class Visualizer {
         levelTop,
         width,
         levelHeight,
-        outputLabels
+        outputLabels,
+        i
       );
     }
   }
@@ -44,7 +50,8 @@ export default class Visualizer {
     top: number,
     width: number,
     height: number,
-    outputLabels: string[]
+    outputLabels: string[],
+    levelNumber: number
   ) {
     const { inputs, outputs, weights, biases } = level;
     const right = left + width;
@@ -64,49 +71,150 @@ export default class Visualizer {
       });
     });
 
+    if (levelNumber === 0) {
+      this.drawFirstLevel(
+        inputs,
+        outputs,
+        biases,
+        top,
+        left,
+        bottom,
+        right,
+        nodeRadius,
+        ctx
+      );
+    } else {
+      this.drawSecondlevel(
+        outputs,
+        biases,
+        outputLabels,
+        top,
+        left,
+        right,
+        nodeRadius,
+        ctx
+      );
+    }
+  }
+
+  private static drawFirstLevel(
+    inputs: Array<any>,
+    outputs: Array<any>,
+    biases: Array<any>,
+    top: number,
+    left: number,
+    bottom: number,
+    right: number,
+    nodeRadius: number,
+    ctx: CanvasRenderingContext2D
+  ) {
     inputs.forEach((input, i) => {
       const x = Visualizer.getNodeXPosition(inputs, i, left, right);
-      ctx.beginPath();
-      ctx.arc(x, bottom, nodeRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "black";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(x, bottom, nodeRadius * 0.6, 0, Math.PI * 2);
-      ctx.fillStyle = Visualizer.getRGBA(inputs[i]);
-      ctx.fill();
+      Visualizer.drawNode(ctx, x, bottom, nodeRadius, Visualizer.gray);
+      ctx.strokeStyle = Visualizer.getRGBA(0.5);
+      ctx.stroke();
+      Visualizer.drawNode(
+        ctx,
+        x,
+        bottom,
+        nodeRadius * 0.8,
+        Visualizer.getRGBA(inputs[i])
+      );
     });
 
     outputs.forEach((output, i) => {
       const x = Visualizer.getNodeXPosition(outputs, i, left, right);
-      ctx.beginPath();
-      ctx.arc(x, top, nodeRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "black";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(x, top, nodeRadius * 0.6, 0, Math.PI * 2);
-      ctx.fillStyle = Visualizer.getRGBA(outputs[i]);
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.lineWidth = 2;
-      ctx.arc(x, top, nodeRadius * 0.8, 0, Math.PI * 2);
-      ctx.strokeStyle = Visualizer.getRGBA(biases[i]);
-      ctx.setLineDash([3, 3]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      if (outputLabels[i]) {
-        ctx.beginPath();
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "white";
-        ctx.font = nodeRadius * 1.1 + "px Arial";
-        ctx.fillText(outputLabels[i], x, top + nodeRadius * 0.1);
-        ctx.lineWidth = 0.8;
-        ctx.strokeText(outputLabels[i], x, top + nodeRadius * 0.1);
-      }
+      this.drawNode(ctx, x, top, nodeRadius, Visualizer.gray);
+      this.drawNode(
+        ctx,
+        x,
+        top,
+        nodeRadius * 0.6,
+        Visualizer.getRGBA(outputs[i])
+      );
+      this.drawDashedNode(ctx, x, top, nodeRadius * 0.8, biases[i]);
     });
+  }
+
+  private static drawSecondlevel(
+    outputs: Array<any>,
+    biases: Array<any>,
+    outputLabels: Array<any>,
+    top: number,
+    left: number,
+    right: number,
+    nodeRadius: number,
+    ctx: CanvasRenderingContext2D
+  ) {
+    const finalDirection =
+      outputs[0] > outputs[1] ? 0 : outputs[0] < outputs[1] ? 1 : -1;
+
+    outputs.forEach((output, i) => {
+      const x = Visualizer.getNodeXPosition(outputs, i, left, right);
+
+      Visualizer.drawNode(ctx, x, top, nodeRadius, Visualizer.gray);
+      this.drawDashedNode(ctx, x, top, nodeRadius, biases[i]);
+      Visualizer.drawLabel(
+        x,
+        top,
+        nodeRadius,
+        outputLabels[i],
+        i === finalDirection,
+        ctx,
+        outputs[i]
+      );
+    });
+  }
+
+  private static drawNode(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    radius: number,
+    fillStyle: string
+  ) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = fillStyle;
+    ctx.fill();
+  }
+
+  private static drawLabel(
+    x: number,
+    y: number,
+    radius: number,
+    label: string,
+    isFinalDirection: boolean,
+    ctx: CanvasRenderingContext2D,
+    output: number
+  ) {
+    ctx.beginPath();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = Visualizer.getRGBA(output);
+    ctx.strokeStyle = Visualizer.getRGBA(0.5);
+    ctx.font = radius * 1.1 + "px Arial";
+    if (isFinalDirection) {
+      ctx.fillText(label, x, y + radius * 0.1);
+    }
+    ctx.lineWidth = 0.8;
+    ctx.strokeText(label, x, y + radius * 0.1);
+  }
+
+  private static drawDashedNode(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    top: number,
+    radius: number,
+    bias: number
+  ) {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.arc(x, top, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = Visualizer.getRGBA(bias);
+    ctx.setLineDash([3, 3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
   }
 
   // yellow is set for positive values, blue for negative
