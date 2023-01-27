@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 import AICarController from "./AICarController";
 
 interface AICarControllerProps {
@@ -7,11 +7,8 @@ interface AICarControllerProps {
 
 export default function AICarUI({ carController }: AICarControllerProps) {
   const canvasRef = useRef(null);
-
   let canvas = canvasRef.current as any;
   let ctx: CanvasRenderingContext2D;
-
-  let { cars, road, traffic, bestCar } = carController;
 
   useEffect(() => {
     canvas = canvasRef.current;
@@ -21,26 +18,29 @@ export default function AICarUI({ carController }: AICarControllerProps) {
     animate();
   }, []);
 
-  const drawUIElements = () => {
-    road.draw(ctx);
-    traffic.forEach((vehicle) => vehicle.draw(ctx));
+  const drawUIElements = useMemo(
+    () => () => {
+      carController.road.draw(ctx);
+      carController.traffic.forEach((vehicle) => vehicle.draw(ctx));
 
-    ctx.globalAlpha = 0.2;
-    cars.forEach((car) => {
-      car.draw(ctx);
-    });
-    ctx.globalAlpha = 1;
-    bestCar.draw(ctx, true);
-  };
+      ctx.globalAlpha = 0.2;
+      carController.cars.forEach((car) => {
+        car.draw(ctx);
+      });
+      ctx.globalAlpha = 1;
+      carController.bestCar.draw(ctx, true);
+    },
+    [carController]
+  );
 
-  const animate = () => {
+  const animate = useCallback(() => {
     canvas.height = window.innerHeight;
-    bestCar = carController.update();
+    carController.update();
 
-    ctx.translate(0, -bestCar.y + canvas.height * 0.7);
+    ctx.translate(0, -carController.bestCar.y + canvas.height * 0.7);
     drawUIElements();
     requestAnimationFrame(animate);
-  };
+  }, [carController, canvas, drawUIElements]);
 
   return (
     <div className="flex">

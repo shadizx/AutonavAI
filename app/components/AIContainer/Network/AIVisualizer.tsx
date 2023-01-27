@@ -18,7 +18,7 @@ export default function AIVisualizer({ carController }: AIVisualizerProps) {
 
     ctx = canvas.getContext("2d");
     animate();
-  });
+  }, []);
 
   const animate = (time: number | any = undefined) => {
     canvas.height = window.innerHeight;

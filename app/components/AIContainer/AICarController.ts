@@ -13,7 +13,7 @@ export default class AICarController {
 
   constructor(
     carControlType: string = "AI",
-    private numberOfCars: number = 100,
+    private numberOfCars: number = 150,
     canvasWidth: number = 200,
     private readonly mutationPercent: number = 0.1,
     trafficRows: string[] = ["010", "101", "110", "011"]
@@ -60,7 +60,6 @@ export default class AICarController {
   }
 
   toggleMachineLearning() {
-    console.log("ML");
     const bestBrainSoFar = localStorage.getItem("bestBrain");
     if (!bestBrainSoFar) {
       this.save(this.bestCar);

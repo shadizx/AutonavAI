@@ -4,6 +4,6 @@ node_modules
 /.idea
 /build
 /public/build
-/styles/app.css
+app.css
 .env
 .DS_Store
