@@ -1,5 +1,10 @@
 import Car from "../Car/Car";
-import { generateCars, generateTrafficRows } from "../Car/CarGenerator";
+import {
+  generateCars,
+  generateFinishLine,
+  generateTrafficRows,
+} from "../Car/Generator";
+import FinishLine from "../Car/FinishLine";
 import Road from "../Car/Road";
 import { NeuralNetwork } from "./Network/Network";
 
@@ -8,6 +13,8 @@ export default class AICarController {
   bestCar: Car;
   road: Road;
   traffic: Array<Car>;
+  finishLine: FinishLine;
+
   carsCollided = 0;
   countdownStart = 1000;
   countdown = this.countdownStart;
@@ -24,6 +31,8 @@ export default class AICarController {
     this.cars = generateCars(this.road, numberOfCars, carControlType);
     this.bestCar = this.cars[0];
     this.traffic = generateTrafficRows(trafficRows, this.road);
+    this.finishLine = generateFinishLine(this.trafficRows.length, canvasWidth);
+
     if (carControlType === "AI") this.loadBrains();
   }
 
@@ -106,6 +115,7 @@ export default class AICarController {
     this.cars = generateCars(this.road, this.numberOfCars, this.carControlType);
     this.bestCar = this.findBestCar();
     this.traffic = generateTrafficRows(this.trafficRows, this.road);
+    this.finishLine = generateFinishLine(this.trafficRows.length, this.canvasWidth);
 
     this.cars.forEach((car) => car.update(this.road.borders, this.traffic));
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
@@ -119,6 +129,7 @@ export default class AICarController {
     this.updateCars();
     this.bestCar = this.findBestCar();
     this.updateTraffic();
+    this.finishLine.update();
     return this.bestCar;
   }
 }

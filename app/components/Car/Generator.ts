@@ -1,9 +1,16 @@
 import { getRandomColor } from "~/utils/Utility";
 import Car from "./Car";
+import FinishLine from "./FinishLine";
 import Road from "./Road";
 
 const width = 30;
 const height = 50;
+
+const trafficSpeed = 2;
+const trafficAcceleration: number = 0.2;
+const trafficFriction = 0.05;
+const trafficRowStart = -100;
+const trafficRowIncrement = -200;
 
 const laneLookup: { [row: string]: number | number[] } = {
   "100": 0,
@@ -29,11 +36,9 @@ export const generateCars = (
 
 export const generateTrafficRows = (
   trafficHash: string[],
-  road: Road,
-  startingRow = -100,
-  rowIncrement = 200
+  road: Road
 ): Car[] => {
-  let rowY = startingRow;
+  let rowY = trafficRowStart;
   const trafficRows: Car[] = [];
   trafficHash.forEach((row) => {
     const lanes = laneLookup[row];
@@ -48,7 +53,7 @@ export const generateTrafficRows = (
             "DUMMY",
             -1,
             getRandomColor(),
-            2
+            trafficSpeed
           )
         );
       });
@@ -62,11 +67,25 @@ export const generateTrafficRows = (
           "DUMMY",
           -1,
           getRandomColor(),
-          2
+          trafficSpeed
         )
       );
     }
-    rowY -= rowIncrement;
+    rowY += trafficRowIncrement;
   });
   return trafficRows;
+};
+
+export const generateFinishLine = (
+  trafficRows: number,
+  canvasWidth: number
+): FinishLine => {
+  const finishLineY = trafficRows * trafficRowIncrement - trafficRowStart - 100;
+  return new FinishLine(
+    canvasWidth,
+    finishLineY,
+    trafficSpeed,
+    trafficAcceleration,
+    trafficFriction
+  );
 };

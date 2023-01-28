@@ -22,6 +22,7 @@ export default function AICarUI({ carController }: AICarControllerProps) {
   const drawUIElements = useMemo(
     () => () => {
       carController.road.draw(ctx);
+      carController.finishLine.draw(ctx);
       carController.traffic.forEach((vehicle) => vehicle.draw(ctx));
 
       ctx.globalAlpha = 0.2;

@@ -137,7 +137,7 @@ export default class Car {
       this.speed = 0;
     }
 
-    // based on unit circle, scale speed by value of sepeed as well
+    // based on unit circle, scale speed by value of speed as well
     this.x -= Math.sin(this.angle) * this.speed;
     this.y -= Math.cos(this.angle) * this.speed;
   }
