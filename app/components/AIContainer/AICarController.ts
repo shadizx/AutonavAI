@@ -15,7 +15,7 @@ export default class AICarController {
 
   constructor(
     private carControlType: string = "AI",
-    private numberOfCars: number = 100,
+    private numberOfCars: number = 200,
     private canvasWidth: number = 200,
     private readonly mutationPercent: number = 0.1,
     private trafficRows: string[] = ["010", "101", "110", "011"]
@@ -51,14 +51,25 @@ export default class AICarController {
 
   updateCars() {
     this.carsCollided = 0;
-    this.cars.forEach((car) => {
+    for (let i = this.cars.length - 1; i >= 0; i--) {
+      let car = this.cars[i];
       car.update(this.road.borders, this.traffic);
       this.carsCollided += car.collided ? 1 : 0;
-      if (this.carsCollided === this.numberOfCars) {
-        this.toggleMachineLearning();
-        this.resetCars();
-      }
-    });
+    }
+    this.cars = this.cars.filter((car) => car.y - this.bestCar.y <= 300);
+    if (this.carsCollided === this.numberOfCars) {
+      this.toggleMachineLearning();
+      this.resetCars();
+    }
+  }
+
+  updateTraffic() {
+    this.traffic = this.traffic
+      .filter((car) => car.y - this.bestCar.y < 300)
+      .map((car) => {
+        car.update(this.road.borders, []);
+        return car;
+      });
   }
 
   toggleMachineLearning() {
@@ -107,7 +118,7 @@ export default class AICarController {
     this.updateCountdown();
     this.updateCars();
     this.bestCar = this.findBestCar();
-    this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
+    this.updateTraffic();
     return this.bestCar;
   }
 }
