@@ -11,6 +11,7 @@ const trafficAcceleration: number = 0.2;
 const trafficFriction = 0.05;
 const trafficRowStart = -100;
 const trafficRowIncrement = -200;
+export const defaultTrafficRows = ["010", "101", "110", "011"];
 
 const laneLookup: { [row: string]: number | number[] } = {
   "100": 0,
@@ -34,10 +35,7 @@ export const generateCars = (
   });
 };
 
-export const generateTrafficRows = (
-  trafficHash: string[],
-  road: Road
-): Car[] => {
+export const generateTraffic = (trafficHash: string[], road: Road): Car[] => {
   let rowY = trafficRowStart;
   const trafficRows: Car[] = [];
   trafficHash.forEach((row) => {

@@ -6,7 +6,7 @@ export default class FinishLine {
 
   constructor(
     private canvasWidth: number,
-    private y: number,
+    public y: number,
     private maxSpeed: number,
     private acceleration: number,
     private friction: number,

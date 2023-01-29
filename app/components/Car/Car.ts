@@ -23,8 +23,8 @@ export default class Car {
   constructor(
     public x: number,
     public y: number,
-    private width: number,
-    private height: number,
+    public readonly width: number,
+    public readonly height: number,
     readonly controlType: string,
     public AICarNumber: number = -1,
     private color: string = "blue",
