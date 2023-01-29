@@ -21,7 +21,7 @@ export default class AICarController {
 
   constructor(
     private carControlType: string = "AI",
-    private numberOfCars: number = 100,
+    private numberOfCars: number = 200,
     private canvasWidth: number = 200,
     private readonly mutationPercent: number = 0.1,
     private trafficRows: string[] = ["101", "011", "110", "101"]
@@ -52,20 +52,21 @@ export default class AICarController {
   updateFinishline() {
     this.finishLine.update();
     if (this.finishLine.y - this.bestCar.height / 2 > this.bestCar.y) {
-      this.toggleMachineLearning();
+      this.toggleMachineLearning(true);
+      console.log("saving");
       this.resetCars();
     }
   }
 
   updateCars() {
+    this.cars = this.cars.filter((car) => car.y - this.bestCar.y <= 300);
     this.carsCollided = 0;
     for (let i = this.cars.length - 1; i >= 0; i--) {
       let car = this.cars[i];
-      car.update(this.road.borders, this.traffic);
       this.carsCollided += car.collided ? 1 : 0;
+      car.update(this.road.borders, this.traffic);
     }
-    this.cars = this.cars.filter((car) => car.y - this.bestCar.y <= 300);
-    if (this.carsCollided === this.numberOfCars) {
+    if (this.carsCollided === this.cars.length) {
       this.toggleMachineLearning();
       this.resetCars();
     }
@@ -80,7 +81,7 @@ export default class AICarController {
       });
   }
 
-  toggleMachineLearning() {
+  toggleMachineLearning(isRaceDone: boolean = false) {
     if (this.carControlType != "AI") return;
     const bestBrainSoFar = localStorage.getItem("bestBrain");
     if (!bestBrainSoFar) {
@@ -89,7 +90,8 @@ export default class AICarController {
       const storageBestDistance = localStorage.getItem("bestBrainDistance");
       const bestDistance =
         storageBestDistance === null ? 100 : parseFloat(storageBestDistance);
-      if (this.bestCar.y < bestDistance) {
+      if (this.bestCar.y < bestDistance || isRaceDone) {
+        console.log("saving");
         this.save(this.bestCar);
       }
     }
