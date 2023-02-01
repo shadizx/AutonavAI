@@ -26,9 +26,8 @@ export default class Car {
     public readonly width: number,
     public readonly height: number,
     readonly controlType: string,
-    public AICarNumber: number = -1,
     private color: string = "blue",
-    readonly MAX_SPEED: number = 3,
+    public MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
     readonly STEERING = 0.03

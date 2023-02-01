@@ -11,7 +11,6 @@ const trafficAcceleration: number = 0.2;
 const trafficFriction = 0.05;
 const trafficRowStart = -100;
 const trafficRowIncrement = -200;
-export const defaultTrafficRows = ["010", "101", "110", "011"];
 
 const laneLookup = new Map<string, number[]>([
   ["100", [0]],
@@ -25,13 +24,14 @@ const laneLookup = new Map<string, number[]>([
 export const generateCars = (
   road: Road,
   n: number,
-  controlType: string = "AI"
+  controlType: string = "AI",
+  speed: number = 3
 ): Car[] => {
   const lane = 1;
   const y = 100;
 
   return Array.from({ length: n }, (_, i) => {
-    return new Car(road.getLaneCenter(lane), y, width, height, controlType, i);
+    return new Car(road.getLaneCenter(lane), y, width, height, controlType, "blue", speed);
   });
 };
 
@@ -48,7 +48,6 @@ export const generateTraffic = (trafficHash: string[], road: Road): Car[] => {
           30,
           50,
           "DUMMY",
-          -1,
           getRandomColor(),
           trafficSpeed
         )

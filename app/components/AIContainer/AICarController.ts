@@ -1,6 +1,5 @@
 import Car from "../Car/Car";
 import {
-  defaultTrafficRows,
   generateCars,
   generateFinishLine,
   generateRandomTrafficHash,
@@ -21,17 +20,21 @@ export default class AICarController {
   generation: number = 0;
 
   constructor(
+    public carSpeed: number = 3,
     private carControlType: string = "AI",
-    private numberOfCars: number = 100,
+    private numberOfCars: number = 150,
     private canvasWidth: number = 200,
     private readonly mutationPercent: number = 0.01,
-    private trafficRows: string[] = generateRandomTrafficHash(10)
+    private trafficRows: number = 3
   ) {
     this.road = new Road(canvasWidth / 2, canvasWidth * 0.9);
-    this.cars = generateCars(this.road, numberOfCars, carControlType);
+    this.cars = generateCars(this.road, numberOfCars, carControlType, carSpeed);
     this.bestCar = this.cars[0];
-    this.traffic = generateTraffic(trafficRows, this.road);
-    this.finishLine = generateFinishLine(this.trafficRows.length, canvasWidth);
+    this.traffic = generateTraffic(
+      generateRandomTrafficHash(trafficRows),
+      this.road
+    );
+    this.finishLine = generateFinishLine(trafficRows, canvasWidth);
 
     if (carControlType === "AI") this.loadBrains();
   }
@@ -65,6 +68,7 @@ export default class AICarController {
       let car = this.cars[i];
       this.carsCollided += car.collided ? 1 : 0;
       car.update(this.road.borders, this.traffic);
+      car.MAX_SPEED = this.carSpeed;
     }
     if (this.carsCollided === this.cars.length) {
       this.toggleMachineLearning();
@@ -79,6 +83,10 @@ export default class AICarController {
         car.update(this.road.borders, []);
         return car;
       });
+  }
+
+  updateCarSpeed(speed: number) {
+    this.carSpeed = speed;
   }
 
   toggleMachineLearning(isRaceDone: boolean = false) {
@@ -112,13 +120,18 @@ export default class AICarController {
   resetCars() {
     console.log("resetting");
     this.road = new Road(this.canvasWidth / 2, this.canvasWidth * 0.9);
-    this.cars = generateCars(this.road, this.numberOfCars, this.carControlType);
-    this.bestCar = this.findBestCar();
-    this.traffic = generateTraffic(this.trafficRows, this.road);
-    this.finishLine = generateFinishLine(
-      this.trafficRows.length,
-      this.canvasWidth
+    this.cars = generateCars(
+      this.road,
+      this.numberOfCars,
+      this.carControlType,
+      this.carSpeed
     );
+    this.bestCar = this.findBestCar();
+    this.traffic = generateTraffic(
+      generateRandomTrafficHash(this.trafficRows),
+      this.road
+    );
+    this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
 
     this.cars.forEach((car) => car.update(this.road.borders, this.traffic));
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
