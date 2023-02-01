@@ -3,6 +3,7 @@ import {
   defaultTrafficRows,
   generateCars,
   generateFinishLine,
+  generateRandomTrafficHash,
   generateTraffic,
 } from "../Car/Generator";
 import FinishLine from "../Car/FinishLine";
@@ -21,10 +22,10 @@ export default class AICarController {
 
   constructor(
     private carControlType: string = "AI",
-    private numberOfCars: number = 200,
+    private numberOfCars: number = 100,
     private canvasWidth: number = 200,
-    private readonly mutationPercent: number = 0.1,
-    private trafficRows: string[] = ["101", "011", "110", "101"]
+    private readonly mutationPercent: number = 0.01,
+    private trafficRows: string[] = generateRandomTrafficHash(10)
   ) {
     this.road = new Road(canvasWidth / 2, canvasWidth * 0.9);
     this.cars = generateCars(this.road, numberOfCars, carControlType);
@@ -53,7 +54,6 @@ export default class AICarController {
     this.finishLine.update();
     if (this.finishLine.y - this.bestCar.height / 2 > this.bestCar.y) {
       this.toggleMachineLearning(true);
-      console.log("saving");
       this.resetCars();
     }
   }
