@@ -62,15 +62,20 @@ export default class AICarController {
   }
 
   updateCars() {
-    this.cars = this.cars.filter((car) => car.y - this.bestCar.y <= 300);
-    this.carsCollided = 0;
-    for (let i = this.cars.length - 1; i >= 0; i--) {
-      let car = this.cars[i];
-      this.carsCollided += car.collided ? 1 : 0;
-      car.update(this.road.borders, this.traffic);
+    this.cars = this.cars.filter((car) => {
       car.MAX_SPEED = this.carSpeed;
-    }
-    if (this.carsCollided === this.cars.length) {
+      let carCollided = car.collided;
+      car.update(this.road.borders, this.traffic);
+      const pos = this.carRelativePosition(car);
+
+      let carJustCollided = carCollided !== car.collided;
+      if (carJustCollided) {
+        this.carsCollided += 1;
+      }
+
+      return pos !== -1 || !car.collided;
+    });
+    if (this.carsCollided === this.numberOfCars) {
       this.toggleMachineLearning();
       this.resetCars();
     }
@@ -144,10 +149,12 @@ export default class AICarController {
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
     if (this.carControlType === "AI") this.loadBrains();
     this.generation += 1;
+    this.carsCollided = 0;
   }
 
   update() {
     this.updateCars();
+    console.log(this.carsCollided);
     this.bestCar = this.findBestCar();
     this.updateTraffic();
     this.updateFinishline();
