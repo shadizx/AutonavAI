@@ -9,7 +9,7 @@ const height = 50;
 const trafficSpeed = 2;
 const trafficAcceleration: number = 0.2;
 const trafficFriction = 0.05;
-const trafficRowStart = -100;
+const trafficRowStart = -200;
 const trafficRowIncrement = -200;
 
 const laneLookup = new Map<string, number[]>([
@@ -28,7 +28,7 @@ export const generateCars = (
   speed: number = 3
 ): Car[] => {
   const lane = 1;
-  const y = 100;
+  const y = 0;
 
   return Array.from({ length: n }, (_, i) => {
     return new Car(road.getLaneCenter(lane), y, width, height, controlType, "blue", speed);
@@ -62,7 +62,7 @@ export const generateFinishLine = (
   trafficRows: number,
   canvasWidth: number
 ): FinishLine => {
-  const finishLineY = trafficRows * trafficRowIncrement - trafficRowStart - 100;
+  const finishLineY = trafficRows * trafficRowIncrement + trafficRowStart;
   return new FinishLine(
     canvasWidth,
     finishLineY,

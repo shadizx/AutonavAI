@@ -20,11 +20,11 @@ export default class AICarController {
   generation: number = 0;
 
   constructor(
-    public carSpeed: number = 3,
+    public carSpeed: number = 4,
     private carControlType: string = "AI",
     private numberOfCars: number = 150,
     private canvasWidth: number = 200,
-    private readonly mutationPercent: number = 0.01,
+    private readonly mutationPercent: number = 0.1,
     private trafficRows: number = 3
   ) {
     this.road = new Road(canvasWidth / 2, canvasWidth * 0.9);
@@ -77,12 +77,14 @@ export default class AICarController {
   }
 
   updateTraffic() {
-    this.traffic = this.traffic
-      .filter((car) => car.y - this.bestCar.y < 300)
-      .map((car) => {
-        car.update(this.road.borders, []);
-        return car;
-      });
+    this.traffic = this.traffic.filter((car) => {
+      const pos = this.carRelativePosition(car);
+      if (pos === 0 || pos === 1) {
+        car.update(this.road.borders, [], pos === 1);
+        return true;
+      }
+      return false;
+    });
   }
 
   updateCarSpeed(speed: number) {
@@ -116,6 +118,11 @@ export default class AICarController {
       car.y < highest.y ? car : highest
     );
   };
+
+  carRelativePosition(car: Car): number {
+    const distance = Math.abs(car.y) - Math.abs(this.bestCar.y);
+    return distance < -300 ? -1 : distance < 600 ? 0 : 1;
+  }
 
   resetCars() {
     console.log("resetting");

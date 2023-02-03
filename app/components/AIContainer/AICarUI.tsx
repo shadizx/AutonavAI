@@ -23,7 +23,9 @@ export default function AICarUI({ carController }: AICarControllerProps) {
     () => () => {
       carController.road.draw(ctx);
       carController.finishLine.draw(ctx);
-      carController.traffic.forEach((vehicle) => vehicle.draw(ctx));
+      carController.traffic.forEach(
+        (car) => carController.carRelativePosition(car) === 0 && car.draw(ctx)
+      );
 
       ctx.globalAlpha = 0.2;
       carController.cars.forEach((car) => {

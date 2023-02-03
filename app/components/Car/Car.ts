@@ -30,7 +30,7 @@ export default class Car {
     public MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
-    readonly STEERING = 0.03
+    readonly STEERING = 0.05
   ) {
     this.useAI = this.controlType === "AI";
     this.keyHandler = new KeyHandler(this.controlType);
@@ -47,11 +47,17 @@ export default class Car {
     }
   }
 
-  update(roadBorders: Array<object>, traffic: Array<Car>) {
+  update(
+    roadBorders: Array<object>,
+    traffic: Array<Car>,
+    shallowUpdate: boolean = false
+  ) {
     if (!this.collided) {
       this.move();
-      this.shape = this.createShape();
-      this.collided = this.checkCollided(roadBorders, traffic);
+      if (!shallowUpdate) {
+        this.shape = this.createShape();
+        this.collided = this.checkCollided(roadBorders, traffic);
+      }
     }
     if (this.sensor && this.brain) {
       this.sensor.update(roadBorders, traffic);
