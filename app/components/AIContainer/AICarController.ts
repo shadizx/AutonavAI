@@ -24,7 +24,7 @@ export default class AICarController {
     private carControlType: string = "AI",
     public numberOfCars: number = 150,
     private canvasWidth: number = 200,
-    private readonly mutationPercent: number = 0.05,
+    public mutationPercent: number = 0.01,
     private trafficRows: number = 3
   ) {
     this.road = new Road(canvasWidth / 2, canvasWidth * 0.9);
@@ -94,6 +94,10 @@ export default class AICarController {
 
   updateCarSpeed(speed: number) {
     this.carSpeed = speed;
+  }
+  
+  updateMutationPercent(percent: number) {
+    this.mutationPercent = percent;
   }
 
   toggleMachineLearning(isRaceDone: boolean = false) {

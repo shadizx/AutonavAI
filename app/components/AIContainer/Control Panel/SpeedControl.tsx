@@ -11,7 +11,7 @@ export default function SpeedControl({ carController }: SpeedControlProps) {
   };
 
   return (
-    <div className="flex justify-between align-center my-4 mx-6 border">
+    <div className="flex justify-between align-center mt-4 mx-6">
       <p className="text-slate-50 self-center">Speed:</p>
       <input
         type="number"
