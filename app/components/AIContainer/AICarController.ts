@@ -16,15 +16,15 @@ export default class AICarController {
   traffic: Array<Car>;
   finishLine: FinishLine;
 
-  carsCollided = 0;
+  public carsCollided = 0;
   generation: number = 0;
 
   constructor(
     public carSpeed: number = 4,
     private carControlType: string = "AI",
-    private numberOfCars: number = 150,
+    public numberOfCars: number = 150,
     private canvasWidth: number = 200,
-    private readonly mutationPercent: number = 0.1,
+    private readonly mutationPercent: number = 0.05,
     private trafficRows: number = 3
   ) {
     this.road = new Road(canvasWidth / 2, canvasWidth * 0.9);
@@ -129,6 +129,11 @@ export default class AICarController {
     return distance < -300 ? -1 : distance < 600 ? 0 : 1;
   }
 
+  getCarsCollided() {
+    console.log(this.carsCollided);
+    return this.carsCollided;
+  }
+
   resetCars() {
     console.log("resetting");
     this.road = new Road(this.canvasWidth / 2, this.canvasWidth * 0.9);
@@ -154,7 +159,6 @@ export default class AICarController {
 
   update() {
     this.updateCars();
-    console.log(this.carsCollided);
     this.bestCar = this.findBestCar();
     this.updateTraffic();
     this.updateFinishline();

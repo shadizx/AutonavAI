@@ -1,4 +1,5 @@
-import AICarController from "./AICarController";
+import AICarController from "../AICarController";
+import Counter from "./Counter";
 
 interface AIControlPanelProps {
   carController: AICarController;
@@ -12,8 +13,11 @@ export default function AIControlPanel({ carController }: AIControlPanelProps) {
   };
 
   return (
-    <div className="flex flex-wrap self-center justify-center w-min bg-slate-700 rounded-2xl shadow-2xl">
-      <div className="flex items-center justify-center m-2 mt-2 p-1">
+    <div className="flex flex-wrap self-center justify-center w-64 bg-slate-700 rounded-2xl shadow-2xl">
+      <div className="w-full">
+        <Counter carController={carController} />
+      </div>
+      <div className="flex items-center justify-center mx-2 mb-2 p-1 w-full">
         <p className="text-slate-50">Speed:</p>
         <input
           type="number"

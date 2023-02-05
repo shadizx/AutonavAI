@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AICarController from "./AICarController";
 import AICarUI from "./AICarUI";
-import AIControlPanel from "./AIControlPanel";
+import AIControlPanel from "./Control Panel/AIControlPanel";
 import AIVisualizer from "./Network/AIVisualizer";
 
 export default function AIContainer() {
