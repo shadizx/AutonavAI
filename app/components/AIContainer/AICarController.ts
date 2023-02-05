@@ -25,7 +25,7 @@ export default class AICarController {
     public numberOfCars: number = 150,
     private canvasWidth: number = 200,
     public mutationPercent: number = 0.01,
-    private trafficRows: number = 3
+    public trafficRows: number = 3
   ) {
     this.road = new Road(canvasWidth / 2, canvasWidth * 0.9);
     this.cars = generateCars(this.road, numberOfCars, carControlType, carSpeed);
@@ -98,6 +98,10 @@ export default class AICarController {
   
   updateMutationPercent(percent: number) {
     this.mutationPercent = percent;
+  }
+
+  updateTrafficRows(rows: number) {
+    this.trafficRows = rows;
   }
 
   toggleMachineLearning(isRaceDone: boolean = false) {
