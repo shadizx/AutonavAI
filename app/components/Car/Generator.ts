@@ -13,12 +13,20 @@ const trafficRowStart = -200;
 const trafficRowIncrement = -200;
 
 const laneLookup = new Map<string, number[]>([
-  ["100", [0]],
-  ["010", [1]],
+  ["10", [0]],
+  ["01", [1]],
   ["001", [2]],
   ["110", [0, 1]],
   ["011", [1, 2]],
   ["101", [0, 2]],
+  ["0001", [3]],
+  ["0011", [2, 3]],
+  ["0101", [1, 3]],
+  ["0111", [1, 2, 3]],
+  ["1001", [0, 3]],
+  ["1101", [0, 1, 3]],
+  ["1011", [0, 2, 3]],
+  ["1110", [0, 1, 2]],
 ]);
 
 export const generateCars = (
@@ -31,7 +39,15 @@ export const generateCars = (
   const y = 0;
 
   return Array.from({ length: n }, (_, i) => {
-    return new Car(road.getLaneCenter(lane), y, width, height, controlType, "blue", speed);
+    return new Car(
+      road.getLaneCenter(lane),
+      y,
+      width,
+      height,
+      controlType,
+      "blue",
+      speed
+    );
   });
 };
 
@@ -72,8 +88,14 @@ export const generateFinishLine = (
   );
 };
 
-export const generateRandomTrafficHash = (n: number): string[] => {
-  return Array.from({ length: n }, (_, i) => {
-    return [...laneLookup.keys()][Math.floor(Math.random() * laneLookup.size)];
+export const generateRandomTrafficHash = (
+  rows: number,
+  laneCount: number
+): string[] => {
+  const options = [...laneLookup.keys()].filter(
+    (key) => key.length <= laneCount
+  );
+  return Array.from({ length: rows }, (_, i) => {
+    return options[Math.floor(Math.random() * options.length)];
   });
 };
