@@ -11,7 +11,7 @@ export default function LaneControl({ carController }: LaneControlProps) {
   };
 
   return (
-    <div className="flex justify-between align-center my-4 mx-6">
+    <div className="flex justify-between align-center mt-4 mx-6">
       <p className="text-slate-50 self-center">Lanes:</p>
       <input
         type="number"

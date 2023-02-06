@@ -27,6 +27,14 @@ export default function AIControlPanel({ carController }: AIControlPanelProps) {
       <div className="w-full">
         <LaneControl carController={carController} />
       </div>
+      <div className="self-center">
+        <button
+          id="deleteButton"
+          className="bg-red-500 hover:bg-red-700 py-1 px-2 m-2 my-4 rounded"
+        >
+          Delete Brain
+        </button>
+      </div>
     </div>
   );
 }
