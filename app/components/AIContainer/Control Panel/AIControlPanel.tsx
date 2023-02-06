@@ -1,5 +1,6 @@
 import AICarController from "../AICarController";
 import CounterControl from "./CounterControl";
+import LaneControl from "./LaneControl";
 import MutationControl from "./MutationControl";
 import SpeedControl from "./SpeedControl";
 import TrafficControl from "./TrafficControl";
@@ -22,6 +23,9 @@ export default function AIControlPanel({ carController }: AIControlPanelProps) {
       </div>
       <div className="w-full">
         <TrafficControl carController={carController} />
+      </div>
+      <div className="w-full">
+        <LaneControl carController={carController} />
       </div>
     </div>
   );

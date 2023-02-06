@@ -13,7 +13,7 @@ export default class Road {
   constructor(
     private x: number,
     private width: number,
-    private readonly laneCount: number = 3
+    public laneCount: number = 3
   ) {
     this.left = this.x - this.width / 2;
     this.right = this.x + this.width / 2;

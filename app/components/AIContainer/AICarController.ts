@@ -19,6 +19,10 @@ export default class AICarController {
   public carsCollided = 0;
   generation: number = 0;
 
+  private updatedLaneCount: number;
+  private updatedMutationPercent: number;
+  private updatedTrafficRows: number;
+
   constructor(
     public carSpeed: number = 4,
     private carControlType: string = "AI",
@@ -36,6 +40,9 @@ export default class AICarController {
     );
     this.finishLine = generateFinishLine(trafficRows, canvasWidth);
 
+    this.updatedLaneCount = this.road.laneCount;
+    this.updatedMutationPercent = this.mutationPercent;
+    this.updatedTrafficRows = trafficRows;
     if (carControlType === "AI") this.loadBrains();
   }
 
@@ -95,13 +102,17 @@ export default class AICarController {
   updateCarSpeed(speed: number) {
     this.carSpeed = speed;
   }
-  
+
   updateMutationPercent(percent: number) {
-    this.mutationPercent = percent;
+    this.updatedMutationPercent = percent;
   }
 
   updateTrafficRows(rows: number) {
-    this.trafficRows = rows;
+    this.updatedTrafficRows = rows;
+  }
+
+  updateLaneCount(lanes: number) {
+    this.updatedLaneCount = lanes;
   }
 
   toggleMachineLearning(isRaceDone: boolean = false) {
@@ -145,6 +156,9 @@ export default class AICarController {
   resetCars() {
     console.log("resetting");
     this.road = new Road(this.canvasWidth / 2, this.canvasWidth * 0.9);
+    this.mutationPercent = this.updatedMutationPercent;
+    this.road.laneCount = this.updatedLaneCount;
+    this.trafficRows = this.updatedTrafficRows;
     this.cars = generateCars(
       this.road,
       this.numberOfCars,
@@ -161,6 +175,7 @@ export default class AICarController {
     this.cars.forEach((car) => car.update(this.road.borders, this.traffic));
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
     if (this.carControlType === "AI") this.loadBrains();
+
     this.generation += 1;
     this.carsCollided = 0;
   }

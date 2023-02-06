@@ -8,8 +8,8 @@ Without the use of any AI libraries
 - [X] print collisions / number of cars left
 - [X] Add option to change traffic rows
 - [X] Add option to change mutation percent
-- [ ] Add options to lane count
-- [ ] Add option to change steering, but generally make steering relative to speed
+- [X] Add options to lane count
+- [ ] Add option to clear brain
 - [ ] Add option to change number of mutations
 - [X] Add option to change speed
-- [ ] Add option to clear brain
+- [ ] Add option to change steering, but generally make steering relative to speed

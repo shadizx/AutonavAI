@@ -11,7 +11,7 @@ export default function TrafficControl({ carController }: TrafficControlProps) {
   };
 
   return (
-    <div className="flex justify-between align-center my-4 mx-6">
+    <div className="flex justify-between align-center mt-4 mx-6">
       <p className="text-slate-50 self-center">Traffic Rows:</p>
       <input
         type="number"
