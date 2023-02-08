@@ -6,8 +6,9 @@ interface TrafficControlProps {
 
 export default function TrafficControl({ carController }: TrafficControlProps) {
   const handleInput = (e: any) => {
-    const rows = e.target.value;
-    carController.updateTrafficRows(rows);
+    const rows: string = e.target.value;
+    carController.updateTrafficRows(parseInt(rows));
+    localStorage.setItem("trafficRows", rows);
   };
 
   return (

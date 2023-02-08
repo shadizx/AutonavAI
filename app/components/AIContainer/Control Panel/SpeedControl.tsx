@@ -6,8 +6,9 @@ interface SpeedControlProps {
 
 export default function SpeedControl({ carController }: SpeedControlProps) {
   const handleInput = (e: any) => {
-    const speed = e.target.value;
-    carController.updateCarSpeed(speed);
+    const speed: string = e.target.value;
+    carController.updateCarSpeed(parseFloat(speed));
+    localStorage.setItem("carSpeed", speed);
   };
 
   return (

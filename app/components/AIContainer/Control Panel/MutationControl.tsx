@@ -6,8 +6,9 @@ interface MutationControlProps {
 
 export default function SpeedControl({ carController }: MutationControlProps) {
   const handleInput = (e: any) => {
-    const percent = e.target.value;
-    carController.updateMutationPercent(percent / 100);
+    const percent: number = parseFloat(e.target.value) / 100;
+    carController.updateMutationPercent(percent);
+    localStorage.setItem("mutationPercent", percent.toString());
   };
 
   return (

@@ -6,8 +6,9 @@ interface LaneControlProps {
 
 export default function LaneControl({ carController }: LaneControlProps) {
   const handleInput = (e: any) => {
-    const lanes = e.target.value;
-    carController.updateLaneCount(lanes);
+    const lanes: string = e.target.value;
+    carController.updateLaneCount(parseInt(lanes));
+    localStorage.setItem("laneCount", lanes);
   };
 
   return (

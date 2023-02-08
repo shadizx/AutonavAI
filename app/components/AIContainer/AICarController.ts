@@ -16,7 +16,12 @@ export default class AICarController {
   traffic: Array<Car>;
   finishLine: FinishLine;
 
-  public carsCollided = 0;
+  carSpeed: number = 0;
+  mutationPercent: number = 0;
+  trafficRows: number = 0;
+  laneCount: number = 0;
+
+  carsCollided = 0;
   generation: number = 0;
 
   private updatedLaneCount: number;
@@ -24,25 +29,32 @@ export default class AICarController {
   private updatedTrafficRows: number;
 
   constructor(
-    public carSpeed: number = 4,
+    carSpeed: number = 4,
+    mutationPercent: number = 0.01,
+    trafficRows: number = 3,
+    laneCount: number = 3,
     private carControlType: string = "AI",
     public numberOfCars: number = 150,
-    private canvasWidth: number = 200,
-    public mutationPercent: number = 0.01,
-    public trafficRows: number = 3
+    private canvasWidth: number = 200
   ) {
-    this.road = new Road(canvasWidth / 2, canvasWidth * 0.9);
+    this.loadLocalStorageOptions(
+      carSpeed,
+      mutationPercent,
+      trafficRows,
+      laneCount
+    );
+    this.road = new Road(canvasWidth / 2, canvasWidth * 0.9, this.laneCount);
     this.cars = generateCars(this.road, numberOfCars, carControlType, carSpeed);
     this.bestCar = this.cars[0];
     this.traffic = generateTraffic(
-      generateRandomTrafficHash(trafficRows, this.road.laneCount),
+      generateRandomTrafficHash(this.trafficRows, this.road.laneCount),
       this.road
     );
-    this.finishLine = generateFinishLine(trafficRows, canvasWidth);
+    this.finishLine = generateFinishLine(this.trafficRows, canvasWidth);
 
     this.updatedLaneCount = this.road.laneCount;
     this.updatedMutationPercent = this.mutationPercent;
-    this.updatedTrafficRows = trafficRows;
+    this.updatedTrafficRows = this.trafficRows;
     if (carControlType === "AI") this.loadBrains();
   }
 
@@ -113,6 +125,27 @@ export default class AICarController {
 
   updateLaneCount(lanes: number) {
     this.updatedLaneCount = lanes;
+  }
+
+  getLocalStorageOption(controlOption: string, defaultOption: number): number {
+    if (typeof window === "undefined") return defaultOption;
+    const option = localStorage.getItem(controlOption);
+    return option ? parseFloat(option) : defaultOption;
+  }
+
+  loadLocalStorageOptions(
+    carSpeed: number,
+    mutationPercent: number,
+    trafficRows: number,
+    laneCount: number
+  ) {
+    this.carSpeed = this.getLocalStorageOption("carSpeed", carSpeed);
+    this.mutationPercent = this.getLocalStorageOption(
+      "mutationPercent",
+      mutationPercent
+    );
+    this.trafficRows = this.getLocalStorageOption("trafficRows", trafficRows);
+    this.laneCount = this.getLocalStorageOption("laneCount", laneCount);
   }
 
   toggleMachineLearning(isRaceDone: boolean = false) {

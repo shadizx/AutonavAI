@@ -31,6 +31,12 @@ export default function AIControlPanel({ carController }: AIControlPanelProps) {
         <button
           id="deleteButton"
           className="bg-red-500 hover:bg-red-700 py-1 px-2 m-2 my-4 rounded"
+          onClick={() => {
+            if (window !== undefined) {
+              localStorage.removeItem("bestBrain");
+              localStorage.removeItem("bestBrainDistance");
+            }
+          }}
         >
           Delete Brain
         </button>
