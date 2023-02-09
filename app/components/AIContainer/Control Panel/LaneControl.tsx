@@ -19,7 +19,7 @@ export default function LaneControl({ carController }: LaneControlProps) {
         name=""
         max="4"
         min="2"
-        defaultValue={carController.road.laneCount}
+        defaultValue={carController.laneCount}
         className="w-11 m-2"
         onInput={handleInput}
       />

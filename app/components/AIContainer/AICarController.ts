@@ -47,12 +47,12 @@ export default class AICarController {
     this.cars = generateCars(this.road, numberOfCars, carControlType, carSpeed);
     this.bestCar = this.cars[0];
     this.traffic = generateTraffic(
-      generateRandomTrafficHash(this.trafficRows, this.road.laneCount),
+      generateRandomTrafficHash(this.trafficRows, this.laneCount),
       this.road
     );
     this.finishLine = generateFinishLine(this.trafficRows, canvasWidth);
 
-    this.updatedLaneCount = this.road.laneCount;
+    this.updatedLaneCount = this.laneCount;
     this.updatedMutationPercent = this.mutationPercent;
     this.updatedTrafficRows = this.trafficRows;
     if (carControlType === "AI") this.loadBrains();
@@ -194,10 +194,10 @@ export default class AICarController {
 
   resetCars() {
     console.log("resetting");
-    this.road = new Road(this.canvasWidth / 2, this.canvasWidth * 0.9);
+    this.laneCount = this.updatedLaneCount;
     this.mutationPercent = this.updatedMutationPercent;
-    this.road.laneCount = this.updatedLaneCount;
     this.trafficRows = this.updatedTrafficRows;
+    this.road = new Road(this.canvasWidth / 2, this.canvasWidth * 0.9, this.laneCount);
     this.cars = generateCars(
       this.road,
       this.numberOfCars,
@@ -206,7 +206,7 @@ export default class AICarController {
     );
     this.bestCar = this.findBestCar();
     this.traffic = generateTraffic(
-      generateRandomTrafficHash(this.trafficRows, this.road.laneCount),
+      generateRandomTrafficHash(this.trafficRows, this.laneCount),
       this.road
     );
     this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
