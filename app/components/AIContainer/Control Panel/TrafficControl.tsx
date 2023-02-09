@@ -17,7 +17,7 @@ export default function TrafficControl({ carController }: TrafficControlProps) {
       <input
         type="number"
         name=""
-        max="100"
+        max="15"
         min="1"
         defaultValue={carController.trafficRows}
         className="w-11 m-2"
