@@ -29,8 +29,8 @@ export default class AICarController {
   private updatedTrafficRows: number;
 
   constructor(
-    carSpeed: number = 4,
-    mutationPercent: number = 0.01,
+    carSpeed: number = 3,
+    mutationPercent: number = 0.03,
     trafficRows: number = 3,
     laneCount: number = 3,
     private carControlType: string = "AI",
@@ -60,7 +60,7 @@ export default class AICarController {
 
   loadBrains() {
     if (typeof window !== "undefined") {
-      const bestBrainSoFar = localStorage.getItem("bestBrain");
+      const bestBrainSoFar = localStorage.getItem("bestBrain" + this.laneCount.toString());
       if (bestBrainSoFar) {
         for (let i = 0; i < this.cars.length; i++) {
           this.cars[i].brain = JSON.parse(bestBrainSoFar);
@@ -150,11 +150,11 @@ export default class AICarController {
 
   toggleMachineLearning() {
     if (this.carControlType != "AI") return;
-    const bestBrainSoFar = localStorage.getItem("bestBrain");
+    const bestBrainSoFar = localStorage.getItem("bestBrain" + this.laneCount.toString());
     if (!bestBrainSoFar) {
       this.save(this.bestCar);
     } else {
-      const storageBestDistance = localStorage.getItem("bestBrainDistance");
+      const storageBestDistance = localStorage.getItem("bestBrainDistance" + this.laneCount.toString());
       const bestDistance =
         storageBestDistance === null ? 100 : parseFloat(storageBestDistance);
       if (this.bestCar.y < bestDistance) {
@@ -165,8 +165,14 @@ export default class AICarController {
   }
 
   save = (car: Car) => {
-    localStorage.setItem("bestBrain", JSON.stringify(car.brain));
-    localStorage.setItem("bestBrainDistance", car.y.toString());
+    localStorage.setItem(
+      "bestBrain" + this.laneCount.toString(),
+      JSON.stringify(car.brain)
+    );
+    localStorage.setItem(
+      "bestBrainDistance" + this.laneCount.toString(),
+      car.y.toString()
+    );
   };
 
   // fitness function for genetic algorithm machine learning.

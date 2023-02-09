@@ -13,5 +13,5 @@ Without the use of any AI libraries
 - [X] Add option to clear brain
 - [X] Update local storage on option change
 - [X] Fix ghost traffic bug
-- [ ] Add dificulty option (how many cars in lane)
-- [ ] Add auto learn
+- [ ] Replace local storage with backend requests
+= [ ] Add dropdown for best brains saved
