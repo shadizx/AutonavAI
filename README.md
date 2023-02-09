@@ -1,4 +1,4 @@
-#Self Driving Car
+# Self Driving Car
 Without the use of any AI libraries
 
 ### Ideas:
@@ -12,5 +12,6 @@ Without the use of any AI libraries
 - [X] Add option to change speed
 - [X] Add option to clear brain
 - [X] Update local storage on option change
-- [ ] Add option to change number of mutations
-- [ ] Add option to change steering, but generally make steering relative to speed
+- [X] Fix ghost traffic bug
+- [ ] Add dificulty option (how many cars in lane)
+- [ ] Add auto learn

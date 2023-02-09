@@ -54,8 +54,8 @@ export default class Car {
   ) {
     if (!this.collided) {
       this.move();
+      this.shape = this.createShape();
       if (!shallowUpdate) {
-        this.shape = this.createShape();
         this.collided = this.checkCollided(roadBorders, traffic);
       }
     }

@@ -75,7 +75,7 @@ export default class AICarController {
   updateFinishline() {
     this.finishLine.update();
     if (this.finishLine.y - this.bestCar.height / 2 > this.bestCar.y) {
-      this.toggleMachineLearning(true);
+      this.toggleMachineLearning();
       this.resetCars();
     }
   }
@@ -148,7 +148,7 @@ export default class AICarController {
     this.laneCount = this.getLocalStorageOption("laneCount", laneCount);
   }
 
-  toggleMachineLearning(isRaceDone: boolean = false) {
+  toggleMachineLearning() {
     if (this.carControlType != "AI") return;
     const bestBrainSoFar = localStorage.getItem("bestBrain");
     if (!bestBrainSoFar) {
@@ -157,7 +157,7 @@ export default class AICarController {
       const storageBestDistance = localStorage.getItem("bestBrainDistance");
       const bestDistance =
         storageBestDistance === null ? 100 : parseFloat(storageBestDistance);
-      if (this.bestCar.y < bestDistance || isRaceDone) {
+      if (this.bestCar.y < bestDistance) {
         console.log("saving");
         this.save(this.bestCar);
       }
