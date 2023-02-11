@@ -22,7 +22,6 @@ export default class AICarController {
   laneCount: number = 0;
 
   carsCollided = 0;
-  generation: number = 0;
 
   private updatedLaneCount: number;
   private updatedMutationPercent: number;
@@ -187,11 +186,6 @@ export default class AICarController {
     return distance < -300 ? -1 : distance < 600 ? 0 : 1;
   }
 
-  getCarsCollided() {
-    console.log(this.carsCollided);
-    return this.carsCollided;
-  }
-
   resetCars() {
     console.log("resetting");
     this.laneCount = this.updatedLaneCount;
@@ -215,7 +209,6 @@ export default class AICarController {
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
     if (this.carControlType === "AI") this.loadBrains();
 
-    this.generation += 1;
     this.carsCollided = 0;
   }
 
