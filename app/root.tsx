@@ -17,7 +17,7 @@ export default function App() {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <title>Self Driving Car</title>
+        <title>AutoNavAI</title>
         <Meta />
         <Links />
       </head>
