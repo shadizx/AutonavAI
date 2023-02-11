@@ -8,3 +8,4 @@ node_modules
 app.css
 .env
 .DS_Store
+.vercel
