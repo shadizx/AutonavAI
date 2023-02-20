@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com
+! tailwindcss v3.2.6 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -530,11 +530,6 @@ video {
   margin-right: 0.5rem;
 }
 
-.my-4 {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
 .mx-6 {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
@@ -543,6 +538,11 @@ video {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .mt-4 {
@@ -557,20 +557,16 @@ video {
   height: 100vh;
 }
 
+.w-14 {
+  width: 3.5rem;
+}
+
 .w-64 {
   width: 16rem;
 }
 
 .w-full {
   width: 100%;
-}
-
-.w-11 {
-  width: 2.75rem;
-}
-
-.w-14 {
-  width: 3.5rem;
 }
 
 .min-w-min {
@@ -602,12 +598,12 @@ video {
   align-self: center;
 }
 
-.rounded-2xl {
-  border-radius: 1rem;
-}
-
 .rounded {
   border-radius: 0.25rem;
+}
+
+.rounded-2xl {
+  border-radius: 1rem;
 }
 
 .border {
@@ -623,9 +619,9 @@ video {
   border-color: rgb(100 116 139 / var(--tw-border-opacity));
 }
 
-.bg-slate-800 {
+.bg-red-500 {
   --tw-bg-opacity: 1;
-  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .bg-slate-700 {
@@ -633,23 +629,13 @@ video {
   background-color: rgb(51 65 85 / var(--tw-bg-opacity));
 }
 
-.bg-red-500 {
+.bg-slate-800 {
   --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
 }
 
 .bg-clip-padding {
   background-clip: padding-box;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
 .px-2 {
@@ -657,19 +643,29 @@ video {
   padding-right: 0.5rem;
 }
 
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .font-normal {
@@ -692,9 +688,9 @@ video {
 }
 
 .transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
