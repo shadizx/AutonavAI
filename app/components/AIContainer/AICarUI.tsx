@@ -6,45 +6,58 @@ interface AICarControllerProps {
 }
 
 export default function AICarUI({ carController }: AICarControllerProps) {
-  const canvasRef = useRef(null);
-  let canvas = canvasRef.current as any;
-  let ctx: CanvasRenderingContext2D;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
-    canvas = canvasRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+
+    if (!ctx || !canvas) return;
+
     canvas.width = 200;
     canvas.height = 700;
 
-    ctx = canvas.getContext("2d");
     animate();
+
+    return () => {
+      if (animationFrameRef.current !== undefined) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, []);
 
-  const drawUIElements = useMemo(
-    () => () => {
-      carController.road.draw(ctx);
-      carController.finishLine.draw(ctx);
-      carController.traffic.forEach(
-        (car) => carController.carRelativePosition(car) === 0 && car.draw(ctx)
-      );
+  const drawUIElements = useCallback(() => {
+    const ctx = canvasRef.current?.getContext("2d");
 
-      ctx.globalAlpha = 0.2;
-      carController.cars.forEach((car) => {
-        car.draw(ctx);
-      });
-      ctx.globalAlpha = 1;
-      carController.bestCar.draw(ctx, true);
-    },
-    [carController]
-  );
+    if (!ctx) return;
+
+    carController.road.draw(ctx);
+    carController.finishLine.draw(ctx);
+    carController.traffic.forEach(
+      (car) => carController.carRelativePosition(car) === 0 && car.draw(ctx)
+    );
+
+    ctx.globalAlpha = 0.2;
+    carController.cars.forEach((car) => {
+      car.draw(ctx);
+    });
+    ctx.globalAlpha = 1;
+    carController.bestCar.draw(ctx, true);
+  }, [carController]);
 
   const animate = useCallback(() => {
     carController.update();
-    canvas.height = window.innerHeight * (2 / 3);
+    if (!canvasRef.current) return;
+    canvasRef.current.height = window.innerHeight * (2 / 3);
+    const ctx = canvasRef.current?.getContext("2d");
 
-    ctx.translate(0, -carController.bestCar.y + canvas.height * 0.7);
+    if (!ctx) return;
+
+    ctx.translate(0, -carController.bestCar.y + canvasRef.current?.height * 0.7);
     drawUIElements();
-    requestAnimationFrame(animate);
-  }, [carController, canvas, drawUIElements]);
+    animationFrameRef.current = requestAnimationFrame(animate);
+  }, [carController, drawUIElements, carController.bestCar]);
 
   return (
     <canvas
