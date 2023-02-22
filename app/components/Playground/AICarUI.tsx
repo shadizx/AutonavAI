@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback, useMemo } from "react";
-import AICarController from "./AICarController";
+import AICarController from "../AICarController";
 
 interface AICarControllerProps {
   carController: AICarController;
@@ -54,7 +54,10 @@ export default function AICarUI({ carController }: AICarControllerProps) {
 
     if (!ctx) return;
 
-    ctx.translate(0, -carController.bestCar.y + canvasRef.current?.height * 0.7);
+    ctx.translate(
+      0,
+      -carController.bestCar.y + canvasRef.current?.height * 0.7
+    );
     drawUIElements();
     animationFrameRef.current = requestAnimationFrame(animate);
   }, [carController, drawUIElements, carController.bestCar]);

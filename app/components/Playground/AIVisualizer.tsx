@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from "react";
-import { NeuralNetwork } from "./Network";
+import { NeuralNetwork } from "../Network/Network";
 import AICarController from "../AICarController";
-import Visualizer from "./Visualizer";
+import Visualizer from "../Network/Visualizer";
 
 interface AIVisualizerProps {
   carController: AICarController;

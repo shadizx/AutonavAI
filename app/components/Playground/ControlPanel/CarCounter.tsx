@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import AICarController from "../AICarController";
+import AICarController from "../../AICarController";
 
-interface CounterControlProps {
+interface CarCoutnerProps {
   carController: AICarController;
 }
 
-export default function CounterControl({ carController }: CounterControlProps) {
+export default function CarCounter({ carController }: CarCoutnerProps) {
   const [carsCollided, setCarsCollided] = useState(0);
   const requestRef = useRef<number>();
 
@@ -23,7 +23,7 @@ export default function CounterControl({ carController }: CounterControlProps) {
     <div className="flex justify-between align-center mt-4 mx-6">
       <p className="text-slate-50 self-center">Cars remaining:</p>
       <div className="flex w-14 justify-items-center align-items-center">
-        <p className="text-slate-50 text-xl mx-auto ">
+        <p className="text-slate-50 text-xl mx-auto">
           {carController.numberOfCars - carsCollided}
         </p>
       </div>

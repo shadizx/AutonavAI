@@ -1,4 +1,4 @@
-import AICarController from "../AICarController";
+import AICarController from "../../AICarController";
 
 interface DeleteButtonProps {
   carController: AICarController;

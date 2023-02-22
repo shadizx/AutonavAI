@@ -1,25 +1,26 @@
-import AICarController from "../AICarController";
+import AICarController from "../../AICarController";
 
-interface TrafficControlProps {
+interface MutationControlProps {
   carController: AICarController;
 }
 
-export default function TrafficControl({ carController }: TrafficControlProps) {
+export default function MutationControl({ carController }: MutationControlProps) {
   const handleInput = (e: any) => {
-    const rows: string = e.target.value;
-    carController.updateTrafficRows(parseInt(rows));
-    localStorage.setItem("trafficRows", rows);
+    const percent: number = parseFloat(e.target.value) / 100;
+    carController.updateMutationPercent(percent);
+    localStorage.setItem("mutationPercent", percent.toString());
   };
 
   return (
     <div className="flex justify-between align-center mt-4 mx-6">
-      <p className="text-slate-50 self-center">Traffic Rows:</p>
+      <p className="text-slate-50 self-center">Mutation Percent:</p>
       <input
         type="number"
         name=""
-        max="15"
-        min="1"
-        defaultValue={carController.trafficRows}
+        max="100"
+        min="0"
+        step="1"
+        defaultValue={carController.mutationPercent * 100}
         className="w-14 m-2 bg-slate-700 px-2 py-1
         text-base
         font-normal

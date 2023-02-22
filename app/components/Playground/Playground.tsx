@@ -1,10 +1,10 @@
 import { useState } from "react";
-import AICarController from "./AICarController";
+import AICarController from "../AICarController";
 import AICarUI from "./AICarUI";
-import AIControlPanel from "./Control Panel/AIControlPanel";
-import AIVisualizer from "./Network/AIVisualizer";
+import ControlPanel from "./ControlPanel/ControlPanel";
+import AIVisualizer from "./AIVisualizer";
 
-export default function AIContainer() {
+export default function Playground() {
   const [carController, setCarController] = useState(new AICarController());
 
   return (
@@ -13,7 +13,7 @@ export default function AIContainer() {
         <AICarUI carController={carController} />
       </div>
       <div id="AIControlPanel" className="flex mx-2 items-center">
-        <AIControlPanel carController={carController} />
+        <ControlPanel carController={carController} />
       </div>
       <div id="AIVisualizer" className="flex mx-2">
         <AIVisualizer carController={carController} />

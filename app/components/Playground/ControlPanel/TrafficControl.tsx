@@ -1,25 +1,25 @@
-import AICarController from "../AICarController";
+import AICarController from "../../AICarController";
 
-interface SpeedControlProps {
+interface TrafficControlProps {
   carController: AICarController;
 }
 
-export default function SpeedControl({ carController }: SpeedControlProps) {
+export default function TrafficControl({ carController }: TrafficControlProps) {
   const handleInput = (e: any) => {
-    const speed: string = e.target.value;
-    carController.updateCarSpeed(parseFloat(speed));
-    localStorage.setItem("carSpeed", speed);
+    const rows: string = e.target.value;
+    carController.updateTrafficRows(parseInt(rows));
+    localStorage.setItem("trafficRows", rows);
   };
 
   return (
     <div className="flex justify-between align-center mt-4 mx-6">
-      <p className="text-slate-50 self-center">Speed:</p>
+      <p className="text-slate-50 self-center">Traffic Rows:</p>
       <input
         type="number"
         name=""
-        max="5"
-        min="3"
-        defaultValue={carController.carSpeed}
+        max="15"
+        min="1"
+        defaultValue={carController.trafficRows}
         className="w-14 m-2 bg-slate-700 px-2 py-1
         text-base
         font-normal

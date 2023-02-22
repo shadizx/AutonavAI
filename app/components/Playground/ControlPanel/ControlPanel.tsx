@@ -1,20 +1,20 @@
-import AICarController from "../AICarController";
-import CounterControl from "./CounterControl";
+import AICarController from "../../AICarController";
+import CarCounter from "./CarCounter";
 import DeleteButton from "./DeleteButton";
 import LaneControl from "./LaneControl";
 import MutationControl from "./MutationControl";
 import SpeedControl from "./SpeedControl";
 import TrafficControl from "./TrafficControl";
 
-interface AIControlPanelProps {
+interface ControlPanelProps {
   carController: AICarController;
 }
 
-export default function AIControlPanel({ carController }: AIControlPanelProps) {
+export default function ControlPanel({ carController }: ControlPanelProps) {
   return (
     <div className="flex flex-wrap self-center justify-center w-64 bg-slate-700 rounded-2xl shadow-2xl">
       <div className="w-full">
-        <CounterControl carController={carController} />
+        <CarCounter carController={carController} />
       </div>
       <div className="w-full">
         <SpeedControl carController={carController} />

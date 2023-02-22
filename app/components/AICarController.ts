@@ -1,12 +1,12 @@
-import Car from "../Car/Car";
+import Car from "./Car/Car";
 import {
   generateCars,
   generateFinishLine,
   generateRandomTrafficHash,
   generateTraffic,
-} from "../Car/Generator";
-import FinishLine from "../Car/FinishLine";
-import Road from "../Car/Road";
+} from "./Car/Generator";
+import FinishLine from "./Car/FinishLine";
+import Road from "./Car/Road";
 import { NeuralNetwork } from "./Network/Network";
 
 export default class AICarController {
@@ -59,7 +59,9 @@ export default class AICarController {
 
   loadBrains() {
     if (typeof window !== "undefined") {
-      const bestBrainSoFar = localStorage.getItem("bestBrain" + this.laneCount.toString());
+      const bestBrainSoFar = localStorage.getItem(
+        "bestBrain" + this.laneCount.toString()
+      );
       if (bestBrainSoFar) {
         for (let i = 0; i < this.cars.length; i++) {
           this.cars[i].brain = JSON.parse(bestBrainSoFar);
@@ -149,11 +151,15 @@ export default class AICarController {
 
   toggleMachineLearning() {
     if (this.carControlType != "AI") return;
-    const bestBrainSoFar = localStorage.getItem("bestBrain" + this.laneCount.toString());
+    const bestBrainSoFar = localStorage.getItem(
+      "bestBrain" + this.laneCount.toString()
+    );
     if (!bestBrainSoFar) {
       this.save(this.bestCar);
     } else {
-      const storageBestDistance = localStorage.getItem("bestBrainDistance" + this.laneCount.toString());
+      const storageBestDistance = localStorage.getItem(
+        "bestBrainDistance" + this.laneCount.toString()
+      );
       const bestDistance =
         storageBestDistance === null ? 100 : parseFloat(storageBestDistance);
       if (this.bestCar.y < bestDistance) {
@@ -191,7 +197,11 @@ export default class AICarController {
     this.laneCount = this.updatedLaneCount;
     this.mutationPercent = this.updatedMutationPercent;
     this.trafficRows = this.updatedTrafficRows;
-    this.road = new Road(this.canvasWidth / 2, this.canvasWidth * 0.9, this.laneCount);
+    this.road = new Road(
+      this.canvasWidth / 2,
+      this.canvasWidth * 0.9,
+      this.laneCount
+    );
     this.cars = generateCars(
       this.road,
       this.numberOfCars,
