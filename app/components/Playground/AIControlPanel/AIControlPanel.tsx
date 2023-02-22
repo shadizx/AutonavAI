@@ -6,13 +6,13 @@ import MutationControl from "./MutationControl";
 import SpeedControl from "./SpeedControl";
 import TrafficControl from "./TrafficControl";
 
-interface ControlPanelProps {
+interface AIControlPanelProps {
   carController: AICarController;
 }
 
-export default function ControlPanel({ carController }: ControlPanelProps) {
+export default function AIControlPanel({ carController }: AIControlPanelProps) {
   return (
-    <div className="flex flex-wrap self-center justify-center w-64 bg-slate-700 rounded-2xl shadow-2xl">
+    <div className="flex flex-wrap self-center justify-center w-64 bg-slate-700 rounded-2xl shadow-2xl mx-8">
       <div className="w-full">
         <CarCounter carController={carController} />
       </div>

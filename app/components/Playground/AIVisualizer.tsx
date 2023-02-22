@@ -53,7 +53,7 @@ export default function AIVisualizer({ carController }: AIVisualizerProps) {
   return (
     <canvas
       id="visualizerCanvas"
-      className="bg-slate-700 rounded-2xl shadow-2xl"
+      className="bg-slate-700 rounded-2xl shadow-2xl mx-8"
       ref={canvasRef}
     ></canvas>
   );

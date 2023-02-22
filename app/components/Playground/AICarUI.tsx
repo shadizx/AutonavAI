@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useMemo } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import AICarController from "../AICarController";
 
 interface AICarControllerProps {
@@ -65,7 +65,7 @@ export default function AICarUI({ carController }: AICarControllerProps) {
   return (
     <canvas
       id="carCanvas"
-      className="bg-slate-700 rounded-2xl shadow-2xl"
+      className="bg-slate-700 rounded-2xl shadow-2xl mx-8"
       ref={canvasRef}
     ></canvas>
   );
