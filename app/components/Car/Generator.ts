@@ -10,7 +10,7 @@ const trafficSpeed = 2;
 const trafficAcceleration: number = 0.2;
 const trafficFriction = 0.05;
 const trafficRowStart = -200;
-const trafficRowIncrement = -200;
+const trafficRowIncrement = -150;
 
 const laneLookup = new Map<string, number[]>([
   ["10", [0]],

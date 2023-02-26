@@ -30,7 +30,7 @@ export default class Car {
     public MAX_SPEED: number = 3,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
-    readonly STEERING = 0.05
+    readonly STEERING = 0.03
   ) {
     this.useAI = this.controlType === "AI";
     this.keyHandler = new KeyHandler(this.controlType);
@@ -66,11 +66,11 @@ export default class Car {
       );
       const outputs = NeuralNetwork.feedForward(offsets, this.brain);
 
+      this.keyHandler.forward = true;
+      this.keyHandler.reverse = false;
       if (this.useAI) {
-        this.keyHandler.forward = true; // override forward control for AI car
         this.keyHandler.left = outputs[0] === 1;
         this.keyHandler.right = outputs[1] === 1;
-        // this.keyHandler.reverse = outputs[3] === 1;
       }
     }
   }

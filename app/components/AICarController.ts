@@ -28,11 +28,11 @@ export default class AICarController {
   private updatedTrafficRows: number;
 
   constructor(
+    private carControlType: string = "AI",
     carSpeed: number = 3,
     mutationPercent: number = 0.03,
     trafficRows: number = 3,
     laneCount: number = 3,
-    private carControlType: string = "AI",
     public numberOfCars: number = 150,
     private canvasWidth: number = 200
   ) {

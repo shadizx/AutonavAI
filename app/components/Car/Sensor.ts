@@ -7,9 +7,9 @@ export default class Sensor {
 
   constructor(
     private car: Car,
-    public rayCount = 5, // number of ray sensors
-    private rayLength = 150, // how long each ray is in pixels
-    private raySpread = Math.PI / 2, // angle that we are going to spread these rays, 45 degrees
+    public rayCount = 5,
+    private rayLength = 200,
+    private raySpread = Math.PI / 2,
     private rayColor = "yellow"
   ) {
     this.rays = [];
