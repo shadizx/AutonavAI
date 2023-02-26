@@ -1,11 +1,11 @@
-import Car from "./Car/Car";
+import Car from "../Car/Car";
 import {
   generateFinishLine,
   generateRandomTrafficHash,
   generateTraffic,
-} from "./Car/Generator";
-import FinishLine from "./Car/FinishLine";
-import Road from "./Car/Road";
+} from "../Car/Generator";
+import FinishLine from "../Car/FinishLine";
+import Road from "../Car/Road";
 
 export default class CarController {
   car: Car;
@@ -13,7 +13,7 @@ export default class CarController {
   traffic: Car[];
   finishLine: FinishLine;
 
-  trafficRows: number = 0;
+  trafficRows: number = 4;
   laneCount: number = 0;
 
   private updatedLaneCount: number;
@@ -21,7 +21,7 @@ export default class CarController {
 
   constructor(
     private carSpeed: number = 5,
-    trafficRows: number = 3,
+    trafficRows: number = 4,
     laneCount: number = 3,
     private canvasWidth: number = 200
   ) {
@@ -34,7 +34,8 @@ export default class CarController {
       50,
       "KEYS",
       "blue",
-      this.carSpeed
+      this.carSpeed,
+      0.04
     );
     this.traffic = generateTraffic(
       generateRandomTrafficHash(this.trafficRows, this.laneCount),

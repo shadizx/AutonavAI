@@ -3,9 +3,13 @@ import AICarController from "../AICarController";
 
 interface AICarControllerProps {
   carController: AICarController;
+  isGameStarted: boolean;
 }
 
-export default function AICarUI({ carController }: AICarControllerProps) {
+export default function AICarUI({
+  carController,
+  isGameStarted,
+}: AICarControllerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
 
@@ -16,7 +20,7 @@ export default function AICarUI({ carController }: AICarControllerProps) {
     if (!ctx || !canvas) return;
 
     canvas.width = 200;
-    canvas.height = 700;
+    canvas.height = window.innerHeight * (2 / 3);
 
     animate();
 
@@ -25,7 +29,7 @@ export default function AICarUI({ carController }: AICarControllerProps) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [isGameStarted]);
 
   const drawUIElements = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
@@ -59,8 +63,10 @@ export default function AICarUI({ carController }: AICarControllerProps) {
       -carController.bestCar.y + canvasRef.current?.height * 0.7
     );
     drawUIElements();
-    animationFrameRef.current = requestAnimationFrame(animate);
-  }, [carController, drawUIElements, carController.bestCar]);
+    if (isGameStarted) {
+      animationFrameRef.current = requestAnimationFrame(animate);
+    }
+  }, [isGameStarted, carController, drawUIElements, carController.bestCar]);
 
   return (
     <canvas

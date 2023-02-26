@@ -28,9 +28,9 @@ export default class Car {
     readonly controlType: string,
     private color: string = "blue",
     public MAX_SPEED: number = 3,
+    readonly STEERING = 0.03,
     readonly ACCELERATION: number = 0.2,
     readonly FRICTION = 0.05,
-    readonly STEERING = 0.03
   ) {
     this.useAI = this.controlType === "AI";
     this.keyHandler = new KeyHandler(this.controlType);
