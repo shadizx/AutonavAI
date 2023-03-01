@@ -104,7 +104,6 @@ export default class CarController {
   }
 
   reset() {
-    console.log("resetting");
     this.laneCount = this.updatedLaneCount;
     this.trafficRows = this.updatedTrafficRows;
     this.road = new Road(

@@ -30,7 +30,7 @@ export default class Car {
     public MAX_SPEED: number = 3,
     readonly STEERING = 0.03,
     readonly ACCELERATION: number = 0.2,
-    readonly FRICTION = 0.05,
+    readonly FRICTION = 0.05
   ) {
     this.useAI = this.controlType === "AI";
     this.keyHandler = new KeyHandler(this.controlType);
@@ -182,14 +182,12 @@ export default class Car {
     this.mask.height = this.height;
 
     const maskCtx = this.mask.getContext("2d");
-    this.image.onload = () => {
-      maskCtx.fillStyle = this.color;
-      maskCtx.rect(0, 0, this.width, this.height);
-      maskCtx.fill();
+    maskCtx.fillStyle = this.color;
+    maskCtx.rect(0, 0, this.width, this.height);
+    maskCtx.fill();
 
-      maskCtx.globalCompositeOperation = "destination-atop";
-      maskCtx.drawImage(this.image, 0, 0, this.width, this.height);
-    };
+    maskCtx.globalCompositeOperation = "destination-atop";
+    maskCtx.drawImage(this.image, 0, 0, this.width, this.height);
   }
 }
 

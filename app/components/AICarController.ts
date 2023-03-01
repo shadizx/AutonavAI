@@ -163,7 +163,6 @@ export default class AICarController {
       const bestDistance =
         storageBestDistance === null ? 100 : parseFloat(storageBestDistance);
       if (this.bestCar.y < bestDistance) {
-        console.log("saving");
         this.save(this.bestCar);
       }
     }
@@ -193,7 +192,6 @@ export default class AICarController {
   }
 
   resetCars() {
-    console.log("resetting");
     this.laneCount = this.updatedLaneCount;
     this.mutationPercent = this.updatedMutationPercent;
     this.trafficRows = this.updatedTrafficRows;

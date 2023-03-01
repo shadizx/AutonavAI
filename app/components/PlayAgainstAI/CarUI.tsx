@@ -54,7 +54,7 @@ export default function CarUI({ carController, isGameStarted }: CarUIProps) {
     if (isGameStarted) {
       animationFrameRef.current = requestAnimationFrame(animate);
     }
-  }, [isGameStarted, carController, drawUIElements, carController.car]);
+  }, [isGameStarted, carController, drawUIElements]);
 
   return (
     <canvas
