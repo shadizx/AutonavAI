@@ -1,15 +1,13 @@
 import { useEffect, useRef, useCallback } from "react";
 import AICarController from "../AICarController";
+import Game from "../PlayAgainstAI/Game";
 
 interface AICarControllerProps {
   carController: AICarController;
-  isGameStarted: boolean;
+  game?: Game;
 }
 
-export default function AICarUI({
-  carController,
-  isGameStarted,
-}: AICarControllerProps) {
+export default function AICarUI({ carController, game }: AICarControllerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
 
@@ -29,7 +27,7 @@ export default function AICarUI({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isGameStarted]);
+  }, [game?.active]);
 
   const drawUIElements = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
@@ -63,10 +61,10 @@ export default function AICarUI({
       -carController.bestCar.y + canvasRef.current?.height * 0.7
     );
     drawUIElements();
-    if (isGameStarted) {
+    if (game?.active || !game) {
       animationFrameRef.current = requestAnimationFrame(animate);
     }
-  }, [isGameStarted, carController, drawUIElements, carController.bestCar]);
+  }, [game?.active, carController, drawUIElements, carController.bestCar]);
 
   return (
     <canvas

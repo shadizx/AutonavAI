@@ -4,17 +4,20 @@ import CarUI from "./CarUI";
 import CarController from "./CarController";
 import ControlPanel from "./ControlPanel";
 import AICarUI from "../Playground/AICarUI";
+import Game from "./Game";
 
 export default function PlayAgainstAIContainer() {
-  const [AICarHandler, setAICarHandler] = useState(new AICarController());
-  const [userCarHandler, setUserCarHandler] = useState(new CarController(4, 4));
-  const [isGameStarted, startGame] = useState(false);
+  const [aiController, setAiController] = useState(new AICarController());
+  const [userController, setUserController] = useState(new CarController(4, 4));
+  const [game, setGame] = useState(
+    new Game(aiController, userController, setAiController, setUserController)
+  );
 
   return (
     <div className="flex flex-wrap justify-center content-center h-screen">
-      <AICarUI carController={AICarHandler} isGameStarted={isGameStarted} />
-      <ControlPanel startGame={startGame} />
-      <CarUI carController={userCarHandler} isGameStarted={isGameStarted} />
+      <AICarUI carController={aiController} game={game} />
+      <ControlPanel game={game} setGame={setGame} />
+      <CarUI carController={userController} game={game} />
     </div>
   );
 }
