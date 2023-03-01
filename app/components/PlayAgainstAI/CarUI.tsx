@@ -47,14 +47,10 @@ export default function CarUI({ carController, game }: CarUIProps) {
     if (!canvasRef.current) return;
     canvasRef.current.height = window.innerHeight * (2 / 3);
     const ctx = canvasRef.current?.getContext("2d");
-
     if (!ctx) return;
-
     ctx.translate(0, -carController.car.y + canvasRef.current?.height * 0.7);
     drawUIElements();
-    if (game.active) {
-      animationFrameRef.current = requestAnimationFrame(animate);
-    }
+    if (game.active) animationFrameRef.current = requestAnimationFrame(animate);
   }, [game.active, carController, drawUIElements]);
 
   return (
