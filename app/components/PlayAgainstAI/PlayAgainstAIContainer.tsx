@@ -1,23 +1,19 @@
-import { useState } from "react";
-import AICarController from "../AICarController";
-import CarUI from "./CarUI";
-import CarController from "./CarController";
-import ControlPanel from "./ControlPanel";
+import { useEffect, useState } from "react";
 import AICarUI from "../Playground/AICarUI";
+import CarUI from "./CarUI";
+import ControlPanel from "./ControlPanel";
 import Game from "./Game";
 
 export default function PlayAgainstAIContainer() {
-  const [aiController, setAiController] = useState(new AICarController());
-  const [userController, setUserController] = useState(new CarController(4, 4));
-  const [game, setGame] = useState(
-    new Game(aiController, userController, setAiController, setUserController)
-  );
+  const [game] = useState(new Game());
+  const [isGameActive, setGameActive] = useState(game.active);
 
+  useEffect(() => {});
   return (
     <div className="flex flex-wrap justify-center content-center h-screen">
-      <AICarUI carController={aiController} game={game} />
-      <ControlPanel game={game} setGame={setGame} />
-      <CarUI carController={userController} game={game} />
+      <AICarUI carController={game.ai} isGameActive={isGameActive} />
+      <ControlPanel setGameActive={setGameActive} />
+      <CarUI game={game} isGameActive={isGameActive} />
     </div>
   );
 }

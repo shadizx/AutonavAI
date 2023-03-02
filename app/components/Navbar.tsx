@@ -15,7 +15,6 @@ const navItems = [
 
 export default function Navbar() {
   const { pathname: route } = useLocation();
-
   return (
     <nav className="bg-gray-900 px-2 sm:px-4 py-2.5 rounded shadow-2xl">
       <div className="container flex flex-wrap items-center justify-between mx-auto">

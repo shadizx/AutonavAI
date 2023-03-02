@@ -1,5 +1,5 @@
 import { interpolate } from "~/utils/Utility";
-import Car from "./Car";
+import type Car from "./Car";
 
 export default class Sensor {
   private rays: Array<any>;

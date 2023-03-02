@@ -1,5 +1,5 @@
 import { interpolate } from "~/utils/Utility";
-import { Level, NeuralNetwork } from "./Network";
+import type { Level, NeuralNetwork } from "./Network";
 
 export default class Visualizer {
   static readonly margin = 50;

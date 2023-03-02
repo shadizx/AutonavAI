@@ -1,33 +1,17 @@
 import { useEffect, useRef, useCallback } from "react";
-import AICarController from "../AICarController";
-import Game from "../PlayAgainstAI/Game";
+import type AICarController from "../AICarController";
 
 interface AICarControllerProps {
   carController: AICarController;
-  game?: Game;
+  isGameActive?: boolean;
 }
 
-export default function AICarUI({ carController, game }: AICarControllerProps) {
+export default function AICarUI({
+  carController,
+  isGameActive,
+}: AICarControllerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-
-    if (!ctx || !canvas) return;
-
-    canvas.width = 200;
-    canvas.height = window.innerHeight * (2 / 3);
-
-    animate();
-
-    return () => {
-      if (animationFrameRef.current !== undefined) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [game?.active]);
 
   const drawUIElements = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
@@ -61,10 +45,28 @@ export default function AICarUI({ carController, game }: AICarControllerProps) {
       -carController.bestCar.y + canvasRef.current?.height * 0.7
     );
     drawUIElements();
-    if (game?.active || !game) {
+    if (isGameActive || isGameActive === null) {
       animationFrameRef.current = requestAnimationFrame(animate);
     }
-  }, [game?.active, carController, drawUIElements, carController.bestCar]);
+  }, [carController, drawUIElements, isGameActive]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+
+    if (!ctx || !canvas) return;
+
+    canvas.width = 200;
+    canvas.height = window.innerHeight * (2 / 3);
+
+    animate();
+
+    return () => {
+      if (animationFrameRef.current !== undefined) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [animate, isGameActive]);
 
   return (
     <canvas

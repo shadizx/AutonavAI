@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import AICarController from "../../AICarController";
+import type AICarController from "../../AICarController";
 
 interface CarCoutnerProps {
   carController: AICarController;

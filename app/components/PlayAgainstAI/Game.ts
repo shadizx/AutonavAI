@@ -1,15 +1,36 @@
 import AICarController from "../AICarController";
-import KeyHandler from "../Car/KeyHandler";
+import { generateRandomTrafficHash } from "../Car/Generator";
 import CarController from "./CarController";
 
 export default class Game {
-  constructor(
-    public ai: AICarController,
-    public user: CarController,
-    public setAIController: Function,
-    public setUserController: Function,
-    public active: boolean = false
-  ) {
-    user.car.keyHandler = new KeyHandler("KEYS");
+  ai: AICarController;
+  user: CarController;
+
+  aiScore = 0;
+  userScore = 0;
+  trafficHash: string[];
+
+  trafficRows = 5;
+  laneCount = 3;
+  carSpeed = 4;
+  canvasWidth = 200;
+
+  constructor(public active: boolean = false) {
+    this.trafficHash = generateRandomTrafficHash(
+      this.trafficRows,
+      this.laneCount
+    );
+    this.ai = new AICarController(
+      this.carSpeed,
+      this.trafficRows,
+      this.laneCount,
+      this.trafficHash
+    );
+    this.user = new CarController(
+      this.carSpeed,
+      this.trafficRows,
+      this.laneCount,
+      this.trafficHash
+    );
   }
 }

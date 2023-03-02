@@ -1,7 +1,7 @@
 import { getRandomColor } from "~/utils/Utility";
 import Car from "./Car";
 import FinishLine from "./FinishLine";
-import Road from "./Road";
+import type Road from "./Road";
 
 const width = 30;
 const height = 50;

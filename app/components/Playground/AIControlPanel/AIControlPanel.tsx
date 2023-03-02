@@ -1,10 +1,10 @@
-import AICarController from "../../AICarController";
 import CarCounter from "./CarCounter";
 import DeleteButton from "./DeleteButton";
 import LaneControl from "./LaneControl";
 import MutationControl from "./MutationControl";
 import SpeedControl from "./SpeedControl";
 import TrafficControl from "./TrafficControl";
+import type AICarController from "../../AICarController";
 
 interface AIControlPanelProps {
   carController: AICarController;

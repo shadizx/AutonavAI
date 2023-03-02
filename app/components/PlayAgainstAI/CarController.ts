@@ -1,11 +1,11 @@
-import Car from "../Car/Car";
 import {
   generateFinishLine,
   generateRandomTrafficHash,
   generateTraffic,
 } from "../Car/Generator";
-import FinishLine from "../Car/FinishLine";
+import Car from "../Car/Car";
 import Road from "../Car/Road";
+import type FinishLine from "../Car/FinishLine";
 
 export default class CarController {
   car: Car;
@@ -15,6 +15,7 @@ export default class CarController {
 
   trafficRows: number = 4;
   laneCount: number = 0;
+  canvasWidth: number = 200;
 
   private updatedLaneCount: number;
   private updatedTrafficRows: number;
@@ -23,11 +24,15 @@ export default class CarController {
     private carSpeed: number = 5,
     trafficRows: number = 4,
     laneCount: number = 3,
-    private canvasWidth: number = 200
+    gameTrafficHash: string[] = []
   ) {
     this.trafficRows = this.getLocalStorageOption("trafficRows", trafficRows);
     this.laneCount = this.getLocalStorageOption("laneCount", laneCount);
-    this.road = new Road(canvasWidth / 2, canvasWidth * 0.9, this.laneCount);
+    this.road = new Road(
+      this.canvasWidth / 2,
+      this.canvasWidth * 0.9,
+      this.laneCount
+    );
     this.car = new Car(
       this.road.getLaneCenter(1),
       0,
@@ -38,10 +43,12 @@ export default class CarController {
       this.carSpeed
     );
     this.traffic = generateTraffic(
-      generateRandomTrafficHash(this.trafficRows, this.laneCount),
+      gameTrafficHash.length === 0
+        ? generateRandomTrafficHash(this.trafficRows, this.laneCount)
+        : gameTrafficHash,
       this.road
     );
-    this.finishLine = generateFinishLine(this.trafficRows, canvasWidth);
+    this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
     this.updatedLaneCount = this.laneCount;
     this.updatedTrafficRows = this.trafficRows;
   }

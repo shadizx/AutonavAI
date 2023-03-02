@@ -1,13 +1,13 @@
-import Car from "./Car/Car";
 import {
   generateCars,
   generateFinishLine,
   generateRandomTrafficHash,
   generateTraffic,
 } from "./Car/Generator";
-import FinishLine from "./Car/FinishLine";
-import Road from "./Car/Road";
 import { NeuralNetwork } from "./Network/Network";
+import Road from "./Car/Road";
+import type Car from "./Car/Car";
+import type FinishLine from "./Car/FinishLine";
 
 export default class AICarController {
   cars: Car[];
@@ -17,44 +17,49 @@ export default class AICarController {
   finishLine: FinishLine;
 
   carSpeed: number = 0;
-  mutationPercent: number = 0;
   trafficRows: number = 0;
   laneCount: number = 0;
-
   carsCollided = 0;
+
+  mutationPercent: number = 0.03
+  numberOfCars: number = 150;
+  canvasWidth: number = 200;
 
   private updatedLaneCount: number;
   private updatedMutationPercent: number;
   private updatedTrafficRows: number;
 
   constructor(
-    private carControlType: string = "AI",
     carSpeed: number = 3,
-    mutationPercent: number = 0.03,
     trafficRows: number = 3,
     laneCount: number = 3,
-    public numberOfCars: number = 150,
-    private canvasWidth: number = 200
+    gameTrafficHash: string[] = []
   ) {
     this.loadLocalStorageOptions(
       carSpeed,
-      mutationPercent,
+      this.mutationPercent,
       trafficRows,
       laneCount
     );
-    this.road = new Road(canvasWidth / 2, canvasWidth * 0.9, this.laneCount);
-    this.cars = generateCars(this.road, numberOfCars, carControlType, carSpeed);
+    this.road = new Road(
+      this.canvasWidth / 2,
+      this.canvasWidth * 0.9,
+      this.laneCount
+    );
+    this.cars = generateCars(this.road, this.numberOfCars, "AI", carSpeed);
     this.bestCar = this.cars[0];
     this.traffic = generateTraffic(
-      generateRandomTrafficHash(this.trafficRows, this.laneCount),
+      gameTrafficHash.length === 0
+        ? generateRandomTrafficHash(this.trafficRows, this.laneCount)
+        : gameTrafficHash,
       this.road
     );
-    this.finishLine = generateFinishLine(this.trafficRows, canvasWidth);
+    this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
 
     this.updatedLaneCount = this.laneCount;
     this.updatedMutationPercent = this.mutationPercent;
     this.updatedTrafficRows = this.trafficRows;
-    if (carControlType === "AI") this.loadBrains();
+    this.loadBrains();
   }
 
   loadBrains() {
@@ -150,7 +155,6 @@ export default class AICarController {
   }
 
   toggleMachineLearning() {
-    if (this.carControlType != "AI") return;
     const bestBrainSoFar = localStorage.getItem(
       "bestBrain" + this.laneCount.toString()
     );
@@ -200,12 +204,7 @@ export default class AICarController {
       this.canvasWidth * 0.9,
       this.laneCount
     );
-    this.cars = generateCars(
-      this.road,
-      this.numberOfCars,
-      this.carControlType,
-      this.carSpeed
-    );
+    this.cars = generateCars(this.road, this.numberOfCars, "AI", this.carSpeed);
     this.bestCar = this.findBestCar();
     this.traffic = generateTraffic(
       generateRandomTrafficHash(this.trafficRows, this.laneCount),
@@ -215,7 +214,7 @@ export default class AICarController {
 
     this.cars.forEach((car) => car.update(this.road.borders, this.traffic));
     this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
-    if (this.carControlType === "AI") this.loadBrains();
+    this.loadBrains();
 
     this.carsCollided = 0;
   }

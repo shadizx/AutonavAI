@@ -5,7 +5,7 @@ import AIControlPanel from "./AIControlPanel/AIControlPanel";
 import AIVisualizer from "./AIVisualizer";
 
 export default function PlaygroundContainer() {
-  const [carController, setCarController] = useState(new AICarController());
+  const [carController] = useState(new AICarController());
 
   return (
     <div className="flex flex-wrap justify-center content-center h-screen">
