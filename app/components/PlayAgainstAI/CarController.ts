@@ -16,6 +16,7 @@ export default class CarController {
   trafficRows: number = 4;
   laneCount: number = 0;
   canvasWidth: number = 200;
+  result: number = 0;
 
   private updatedLaneCount: number;
   private updatedTrafficRows: number;
@@ -24,7 +25,7 @@ export default class CarController {
     private carSpeed: number = 5,
     trafficRows: number = 4,
     laneCount: number = 3,
-    gameTrafficHash: string[] = []
+    private gameTrafficHash: string[] = []
   ) {
     this.trafficRows = this.getLocalStorageOption("trafficRows", trafficRows);
     this.laneCount = this.getLocalStorageOption("laneCount", laneCount);
@@ -56,15 +57,13 @@ export default class CarController {
   updateFinishline() {
     this.finishLine.update();
     if (this.finishLine.y - this.car.height / 2 > this.car.y) {
-      this.reset();
+      this.result = 1;
     }
   }
 
   updateCar() {
     this.car.update(this.road.borders, this.traffic);
-    if (this.car.collided) {
-      this.reset();
-    }
+    if (this.car.collided) this.result = -1;
   }
 
   updateTraffic() {

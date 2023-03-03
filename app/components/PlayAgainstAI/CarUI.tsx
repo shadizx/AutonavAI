@@ -30,7 +30,7 @@ export default function CarUI({ game, isGameActive }: CarUIProps) {
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
 
-    game.user.update();
+    if (game.user.result === 0) game.user.update();
     ctx.translate(0, -game.user.car.y + canvasRef.current?.height * 0.7);
     drawUIElements();
     if (isGameActive)

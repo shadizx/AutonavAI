@@ -21,9 +21,10 @@ export default class AICarController {
   laneCount: number = 0;
   carsCollided = 0;
 
-  mutationPercent: number = 0.03
+  mutationPercent: number = 0.03;
   numberOfCars: number = 150;
   canvasWidth: number = 200;
+  result: number = 0;
 
   private updatedLaneCount: number;
   private updatedMutationPercent: number;
@@ -33,7 +34,7 @@ export default class AICarController {
     carSpeed: number = 3,
     trafficRows: number = 3,
     laneCount: number = 3,
-    gameTrafficHash: string[] = []
+    private gameTrafficHash: string[] = []
   ) {
     this.loadLocalStorageOptions(
       carSpeed,
@@ -81,8 +82,12 @@ export default class AICarController {
   updateFinishline() {
     this.finishLine.update();
     if (this.finishLine.y - this.bestCar.height / 2 > this.bestCar.y) {
-      this.toggleMachineLearning();
-      this.resetCars();
+      if (this.isGameMode()) {
+        this.result = 1;
+      } else {
+        this.toggleMachineLearning();
+        this.resetCars();
+      }
     }
   }
 
@@ -101,8 +106,12 @@ export default class AICarController {
       return pos !== -1 || !car.collided;
     });
     if (this.carsCollided === this.numberOfCars) {
-      this.toggleMachineLearning();
-      this.resetCars();
+      if (this.isGameMode()) {
+        this.result = -1;
+      } else {
+        this.toggleMachineLearning();
+        this.resetCars();
+      }
     }
   }
 
@@ -131,6 +140,10 @@ export default class AICarController {
 
   updateLaneCount(lanes: number) {
     this.updatedLaneCount = lanes;
+  }
+
+  isGameMode(): boolean {
+    return this.gameTrafficHash.length !== 0;
   }
 
   getLocalStorageOption(controlOption: string, defaultOption: number): number {

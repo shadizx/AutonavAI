@@ -33,12 +33,11 @@ export default function AICarUI({
   }, [carController]);
 
   const animate = useCallback(() => {
-    carController.update();
     if (!canvasRef.current) return;
     canvasRef.current.height = window.innerHeight * (2 / 3);
     const ctx = canvasRef.current?.getContext("2d");
-
     if (!ctx) return;
+    carController.update();
 
     ctx.translate(
       0,

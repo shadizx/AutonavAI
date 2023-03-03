@@ -12,7 +12,7 @@ export default function PlayAgainstAIContainer() {
   return (
     <div className="flex flex-wrap justify-center content-center h-screen">
       <AICarUI carController={game.ai} isGameActive={isGameActive} />
-      <ControlPanel setGameActive={setGameActive} />
+      <ControlPanel game={game} setGameActive={setGameActive} />
       <CarUI game={game} isGameActive={isGameActive} />
     </div>
   );
