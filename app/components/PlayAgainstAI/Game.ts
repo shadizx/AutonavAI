@@ -12,7 +12,7 @@ export default class Game {
 
   trafficRows = 5;
   laneCount = 3;
-  carSpeed = 4;
+  carSpeed = 5;
   canvasWidth = 200;
 
   constructor(public active: boolean = false) {

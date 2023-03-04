@@ -16,9 +16,6 @@ export default class AICarController {
   traffic: Array<Car>;
   finishLine: FinishLine;
 
-  carSpeed: number = 0;
-  trafficRows: number = 0;
-  laneCount: number = 0;
   carsCollided = 0;
 
   mutationPercent: number = 0.03;
@@ -31,17 +28,18 @@ export default class AICarController {
   private updatedTrafficRows: number;
 
   constructor(
-    carSpeed: number = 3,
-    trafficRows: number = 3,
-    laneCount: number = 3,
+    public carSpeed: number = 3,
+    public trafficRows: number = 3,
+    public laneCount: number = 3,
     private gameTrafficHash: string[] = []
   ) {
-    this.loadLocalStorageOptions(
-      carSpeed,
-      this.mutationPercent,
-      trafficRows,
-      laneCount
-    );
+    if (!this.isGameMode())
+      this.loadLocalStorageOptions(
+        carSpeed,
+        this.mutationPercent,
+        trafficRows,
+        laneCount
+      );
     this.road = new Road(
       this.canvasWidth / 2,
       this.canvasWidth * 0.9,

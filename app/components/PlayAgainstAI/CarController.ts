@@ -1,8 +1,4 @@
-import {
-  generateFinishLine,
-  generateRandomTrafficHash,
-  generateTraffic,
-} from "../Car/Generator";
+import { generateFinishLine, generateTraffic } from "../Car/Generator";
 import Car from "../Car/Car";
 import Road from "../Car/Road";
 import type FinishLine from "../Car/FinishLine";
@@ -13,22 +9,15 @@ export default class CarController {
   traffic: Car[];
   finishLine: FinishLine;
 
-  trafficRows: number = 4;
-  laneCount: number = 0;
   canvasWidth: number = 200;
   result: number = 0;
 
-  private updatedLaneCount: number;
-  private updatedTrafficRows: number;
-
   constructor(
     private carSpeed: number = 5,
-    trafficRows: number = 4,
-    laneCount: number = 3,
-    private gameTrafficHash: string[] = []
+    public trafficRows: number = 4,
+    public laneCount: number = 3,
+    gameTrafficHash: string[]
   ) {
-    this.trafficRows = this.getLocalStorageOption("trafficRows", trafficRows);
-    this.laneCount = this.getLocalStorageOption("laneCount", laneCount);
     this.road = new Road(
       this.canvasWidth / 2,
       this.canvasWidth * 0.9,
@@ -43,15 +32,8 @@ export default class CarController {
       "blue",
       this.carSpeed
     );
-    this.traffic = generateTraffic(
-      gameTrafficHash.length === 0
-        ? generateRandomTrafficHash(this.trafficRows, this.laneCount)
-        : gameTrafficHash,
-      this.road
-    );
+    this.traffic = generateTraffic(gameTrafficHash, this.road);
     this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
-    this.updatedLaneCount = this.laneCount;
-    this.updatedTrafficRows = this.trafficRows;
   }
 
   updateFinishline() {
@@ -77,54 +59,9 @@ export default class CarController {
     });
   }
 
-  updateCarSpeed(speed: number) {
-    this.carSpeed = speed;
-  }
-
-  updateTrafficRows(rows: number) {
-    this.updatedTrafficRows = rows;
-  }
-
-  updateLaneCount(lanes: number) {
-    this.updatedLaneCount = lanes;
-  }
-
-  getLocalStorageOption(controlOption: string, defaultOption: number): number {
-    if (typeof window === "undefined") return defaultOption;
-    const option = localStorage.getItem(controlOption);
-    return option ? parseFloat(option) : defaultOption;
-  }
-
   carRelativePosition(car: Car): number {
     const distance = Math.abs(car.y) - Math.abs(this.car.y);
     return distance < -300 ? -1 : distance < 600 ? 0 : 1;
-  }
-
-  reset() {
-    this.laneCount = this.updatedLaneCount;
-    this.trafficRows = this.updatedTrafficRows;
-    this.road = new Road(
-      this.canvasWidth / 2,
-      this.canvasWidth * 0.9,
-      this.laneCount
-    );
-    this.car = new Car(
-      this.road.getLaneCenter(1),
-      0,
-      30,
-      50,
-      "KEYS",
-      "blue",
-      this.carSpeed
-    );
-    this.traffic = generateTraffic(
-      generateRandomTrafficHash(this.trafficRows, this.laneCount),
-      this.road
-    );
-    this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
-
-    this.car.update(this.road.borders, this.traffic);
-    this.traffic.forEach((vehicle) => vehicle.update(this.road.borders, []));
   }
 
   update() {
