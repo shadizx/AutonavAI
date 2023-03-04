@@ -5,14 +5,18 @@ import ControlPanel from "./ControlPanel";
 import Game from "./Game";
 
 export default function PlayAgainstAIContainer() {
-  const [game] = useState(new Game());
+  const [game, setGame] = useState(new Game());
   const [isGameActive, setGameActive] = useState(game.active);
 
   useEffect(() => {});
   return (
     <div className="flex flex-wrap justify-center content-center h-screen">
       <AICarUI carController={game.ai} isGameActive={isGameActive} />
-      <ControlPanel game={game} setGameActive={setGameActive} />
+      <ControlPanel
+        game={game}
+        setGameActive={setGameActive}
+        setGame={setGame}
+      />
       <CarUI game={game} isGameActive={isGameActive} />
     </div>
   );

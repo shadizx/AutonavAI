@@ -37,7 +37,7 @@ export default function AICarUI({
     canvasRef.current.height = window.innerHeight * (2 / 3);
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
-    carController.update();
+    if (carController.result === 0) carController.update();
 
     ctx.translate(
       0,
