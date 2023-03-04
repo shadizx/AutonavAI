@@ -6,12 +6,11 @@ export default class Car {
   shape: Array<any> = [];
   sensor: Sensor | undefined;
   keyHandler: KeyHandler;
-  // for neural net car
+
   brain: NeuralNetwork | undefined;
   useAI: boolean;
   private readonly hiddenLayers = 6;
   private readonly outputLayers = 2;
-  // for neural net car
 
   speed: number = 0;
   angle: number = 0;
@@ -112,7 +111,6 @@ export default class Car {
       this.speed -= this.ACCELERATION;
     }
 
-    // only be able to turn if not stopped
     if (this.speed != 0) {
       const flipReverse = this.speed < 0 ? -1 : 1;
       if (this.keyHandler.left) {
@@ -123,26 +121,22 @@ export default class Car {
       }
     }
 
-    // cap speed to not go above MAX_SPEED in forward and below MAX_SPEED / 2 in reverse
     if (this.speed > this.MAX_SPEED) {
       this.speed = this.MAX_SPEED;
     } else if (this.speed < -this.MAX_SPEED / 2) {
       this.speed = -this.MAX_SPEED / 2;
     }
 
-    // add friction when car is going forward/backward
     if (this.speed > 0) {
       this.speed -= this.FRICTION;
     } else if (this.speed < 0) {
       this.speed += this.FRICTION;
     }
 
-    // stop car if speed is close to 0
     if (Math.abs(this.speed) < this.FRICTION) {
       this.speed = 0;
     }
 
-    // based on unit circle, scale speed by value of speed as well
     this.x -= Math.sin(this.angle) * this.speed;
     this.y -= Math.cos(this.angle) * this.speed;
   }

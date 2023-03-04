@@ -44,7 +44,7 @@ export default function AICarUI({
       -carController.bestCar.y + canvasRef.current?.height * 0.7
     );
     drawUIElements();
-    if (isGameActive || isGameActive === null) {
+    if (isGameActive || isGameActive === undefined) {
       animationFrameRef.current = requestAnimationFrame(animate);
     }
   }, [carController, drawUIElements, isGameActive]);

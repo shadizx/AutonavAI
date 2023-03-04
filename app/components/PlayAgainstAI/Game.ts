@@ -10,7 +10,7 @@ export default class Game {
   userScore = 0;
   trafficHash: string[];
 
-  trafficRows = 5;
+  trafficRows = 10;
   laneCount = 3;
   carSpeed = 5;
   canvasWidth = 200;
