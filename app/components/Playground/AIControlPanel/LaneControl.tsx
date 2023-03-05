@@ -6,9 +6,10 @@ interface LaneControlProps {
 
 export default function LaneControl({ carController }: LaneControlProps) {
   const handleInput = (e: any) => {
-    const lanes: string = e.target.value;
-    carController.updateLaneCount(parseInt(lanes));
-    localStorage.setItem("laneCount", lanes);
+    let lanes: number = parseInt(e.target.value);
+    if (lanes > 4 || lanes < 2 || Number.isNaN(lanes)) return;
+    carController.updateLaneCount(lanes);
+    localStorage.setItem("laneCount", String(lanes));
   };
 
   return (
@@ -16,6 +17,7 @@ export default function LaneControl({ carController }: LaneControlProps) {
       <p className="text-slate-50 self-center">Lanes:</p>
       <input
         type="number"
+        inputMode="numeric"
         name=""
         max="4"
         min="2"

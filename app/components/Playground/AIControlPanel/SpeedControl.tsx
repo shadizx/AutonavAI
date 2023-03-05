@@ -6,9 +6,10 @@ interface SpeedControlProps {
 
 export default function SpeedControl({ carController }: SpeedControlProps) {
   const handleInput = (e: any) => {
-    const speed: string = e.target.value;
-    carController.updateCarSpeed(parseFloat(speed));
-    localStorage.setItem("carSpeed", speed);
+    const speed: number = parseInt(e.target.value);
+    if (speed > 5 || speed < 3 || Number.isNaN(speed)) return;
+    carController.updateCarSpeed(speed);
+    localStorage.setItem("carSpeed", String(speed));
   };
 
   return (
@@ -16,6 +17,7 @@ export default function SpeedControl({ carController }: SpeedControlProps) {
       <p className="text-slate-50 self-center">Speed:</p>
       <input
         type="number"
+        inputMode="numeric"
         name=""
         max="5"
         min="3"

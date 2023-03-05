@@ -11,8 +11,8 @@ export default class Game {
   trafficHash: string[];
 
   trafficRows = 10;
-  laneCount = 3;
-  carSpeed = 5;
+  laneCount = 4;
+  carSpeed = 4;
   canvasWidth = 200;
 
   constructor(public active: boolean = false) {

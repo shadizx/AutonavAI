@@ -4,11 +4,14 @@ interface MutationControlProps {
   carController: AICarController;
 }
 
-export default function MutationControl({ carController }: MutationControlProps) {
+export default function MutationControl({
+  carController,
+}: MutationControlProps) {
   const handleInput = (e: any) => {
-    const percent: number = parseFloat(e.target.value) / 100;
+    let percent: number = parseFloat(e.target.value) / 100;
+    if (percent > 100 || percent < 0 || Number.isNaN(percent)) return;
     carController.updateMutationPercent(percent);
-    localStorage.setItem("mutationPercent", percent.toString());
+    localStorage.setItem("mutationPercent", String(percent));
   };
 
   return (
@@ -16,6 +19,7 @@ export default function MutationControl({ carController }: MutationControlProps)
       <p className="text-slate-50 self-center">Mutation Percent:</p>
       <input
         type="number"
+        inputMode="numeric"
         name=""
         max="100"
         min="0"

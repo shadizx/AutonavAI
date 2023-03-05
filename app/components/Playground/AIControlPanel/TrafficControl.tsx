@@ -6,9 +6,10 @@ interface TrafficControlProps {
 
 export default function TrafficControl({ carController }: TrafficControlProps) {
   const handleInput = (e: any) => {
-    const rows: string = e.target.value;
-    carController.updateTrafficRows(parseInt(rows));
-    localStorage.setItem("trafficRows", rows);
+    const rows: number = parseInt(e.target.value);
+    if (rows > 15 || rows < 1 || Number.isNaN(rows)) return;
+    carController.updateTrafficRows(rows);
+    localStorage.setItem("trafficRows", String(rows));
   };
 
   return (
@@ -16,6 +17,7 @@ export default function TrafficControl({ carController }: TrafficControlProps) {
       <p className="text-slate-50 self-center">Traffic Rows:</p>
       <input
         type="number"
+        inputMode="numeric"
         name=""
         max="15"
         min="1"
