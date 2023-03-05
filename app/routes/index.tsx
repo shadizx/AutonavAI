@@ -1,10 +1,5 @@
-import Navbar from "~/components/Navbar";
+import { redirect } from "@remix-run/node";
 
-export default function Index() {
-  // TODO: Enrich with landing page
-  return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
-    </div>
-  );
+export default function Home() {
+  return redirect("/play-against-ai");
 }
