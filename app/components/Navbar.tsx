@@ -1,4 +1,7 @@
-import { Link, useLocation } from "@remix-run/react";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navClassNames = {
   selected:
@@ -13,18 +16,13 @@ const navItems = [
 ];
 
 export default function Navbar() {
-  const { pathname: route } = useLocation();
+  const route = usePathname();
   return (
     <nav className="bg-gray-900 px-2 sm:px-4 py-2.5 rounded shadow-2xl">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
-        <Link to="/play-against-ai" className="flex items-center">
-          <img
-            src="./assets/Car.png"
-            className="h-6 mr-3 sm:h-9"
-            alt="AutoNavAI Logo"
-          />
+        <Link href="/play-against-ai" className="flex items-center">
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-            AutoNavAI
+            Autonav AI
           </span>
         </Link>
         <div className="w-full md:block md:w-auto" id="navbar-default">
@@ -32,7 +30,7 @@ export default function Navbar() {
             {navItems.map((item) => (
               <li key={item.path}>
                 <Link
-                  to={item.path}
+                  href={item.path}
                   className={
                     route === item.path
                       ? navClassNames.selected

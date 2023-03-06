@@ -17,15 +17,14 @@ export default class Car {
   collided: boolean = false;
   collidedCarColor = "#717171";
   image: HTMLImageElement | any;
-  mask: HTMLCanvasElement | any;
 
   constructor(
+    public type: string,
     public x: number,
     public y: number,
     public readonly width: number,
     public readonly height: number,
     readonly controlType: string,
-    private color: string = "blue",
     public MAX_SPEED: number = 3,
     readonly STEERING = 0.03,
     readonly ACCELERATION: number = 0.2,
@@ -41,9 +40,7 @@ export default class Car {
         this.outputLayers,
       ]);
     }
-    if (typeof window !== "undefined") {
-      this.loadImageAndMask();
-    }
+    this.loadImage();
   }
 
   update(
@@ -83,16 +80,6 @@ export default class Car {
     ctx.translate(this.x, this.y);
     ctx.rotate(-this.angle);
 
-    if (!this.collided) {
-      ctx.drawImage(
-        this.mask,
-        -this.width / 2,
-        -this.height / 2,
-        this.width,
-        this.height
-      );
-      ctx.globalCompositeOperation = "multiply";
-    }
     ctx.drawImage(
       this.image,
       -this.width / 2,
@@ -100,6 +87,7 @@ export default class Car {
       this.width,
       this.height
     );
+    if (!this.collided) ctx.globalCompositeOperation = "multiply";
     ctx.restore();
   }
 
@@ -162,26 +150,19 @@ export default class Car {
 
   private checkCollided(roadBorders: any[], traffic: Car[]) {
     return (
-      roadBorders.some((boarder) => shapeIntersect(this.shape, boarder)) ||
+      roadBorders.some((border) => shapeIntersect(this.shape, border)) ||
       traffic.some((car) => shapeIntersect(this.shape, car.shape))
     );
   }
 
-  private loadImageAndMask() {
+  private loadImage() {
+    if (typeof window === 'undefined') return;
     this.image = document.createElement("img");
-    this.image.src = "./assets/Car.png";
-
-    this.mask = document.createElement("canvas");
-    this.mask.width = this.width;
-    this.mask.height = this.height;
-
-    const maskCtx = this.mask.getContext("2d");
-    maskCtx.fillStyle = this.color;
-    maskCtx.rect(0, 0, this.width, this.height);
-    maskCtx.fill();
-
-    maskCtx.globalCompositeOperation = "destination-atop";
-    maskCtx.drawImage(this.image, 0, 0, this.width, this.height);
+    let source = "Car";
+    if (this.type !== "main") {
+      source = `traffic_${Math.floor(Math.random() * 8) + 1}`;
+    }
+    this.image.src = `./assets/${source}.png`;
   }
 }
 

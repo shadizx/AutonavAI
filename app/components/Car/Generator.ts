@@ -1,4 +1,3 @@
-import { getRandomColor } from "~/utils/Utility";
 import Car from "./Car";
 import FinishLine from "./FinishLine";
 import type Road from "./Road";
@@ -40,12 +39,12 @@ export const generateCars = (
 
   return Array.from({ length: n }, (_, i) => {
     return new Car(
+      "main",
       road.getLaneCenter(lane),
       y,
       width,
       height,
       controlType,
-      "blue",
       speed
     );
   });
@@ -59,12 +58,12 @@ export const generateTraffic = (trafficHash: string[], road: Road): Car[] => {
     lanes.forEach((lane) => {
       trafficRows.push(
         new Car(
+          "traffic",
           road.getLaneCenter(lane),
           rowY,
           30,
           50,
           "DUMMY",
-          getRandomColor(),
           trafficSpeed
         )
       );

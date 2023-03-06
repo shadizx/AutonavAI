@@ -1,5 +1,7 @@
-import Navbar from "~/components/Navbar";
-import PlaygroundContainer from "~/components/Playground/PlaygroundContainer";
+"use client"
+
+import Navbar from "../components/Navbar";
+import PlaygroundContainer from "../components/Playground/PlaygroundContainer";
 
 export default function PlaygroundRoute() {
   return (

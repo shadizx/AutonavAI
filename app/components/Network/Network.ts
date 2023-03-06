@@ -1,4 +1,4 @@
-import { interpolate } from "~/utils/Utility";
+import { interpolate } from "../utils/interpolate";
 
 export class NeuralNetwork {
   levels: Level[];

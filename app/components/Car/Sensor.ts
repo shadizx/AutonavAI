@@ -1,4 +1,4 @@
-import { interpolate } from "~/utils/Utility";
+import { interpolate } from "../utils/interpolate";
 import type Car from "./Car";
 
 export default class Sensor {

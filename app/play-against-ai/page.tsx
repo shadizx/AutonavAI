@@ -1,5 +1,7 @@
-import Navbar from "~/components/Navbar";
-import PlayAgainstAIContainer from "~/components/PlayAgainstAI/PlayAgainstAIContainer";
+"use client";
+
+import Navbar from "../components/Navbar";
+import PlayAgainstAIContainer from "../components/PlayAgainstAI/PlayAgainstAIContainer";
 
 export default function PlayAgainstAIRoute() {
   return (

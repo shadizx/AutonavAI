@@ -24,12 +24,12 @@ export default class CarController {
       this.laneCount
     );
     this.car = new Car(
+      "main",
       this.road.getLaneCenter(1),
       0,
       30,
       50,
       "KEYS",
-      "blue",
       this.carSpeed
     );
     this.traffic = generateTraffic(gameTrafficHash, this.road);

@@ -1,4 +1,4 @@
-import { interpolate } from "~/utils/Utility";
+import { interpolate } from "../utils/interpolate";
 import type { Level, NeuralNetwork } from "./Network";
 
 export default class Visualizer {
