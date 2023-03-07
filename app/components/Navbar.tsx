@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import logo from "../../public/assets/logo.png";
 import { usePathname } from "next/navigation";
 
 const navClassNames = {
@@ -20,8 +22,15 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-900 px-2 sm:px-4 py-2.5 rounded shadow-2xl">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
-        <Link href="/play-against-ai" className="flex items-center">
-          <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+        <Link href="/play-against-ai" className="flex items-center my-0">
+          <Image
+            src={logo}
+            alt={"Autonav AI Logo"}
+            width={40}
+            height={40}
+            className="m-3 ml-0"
+          ></Image>
+          <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
             Autonav AI
           </span>
         </Link>
