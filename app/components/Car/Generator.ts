@@ -9,8 +9,8 @@ const trafficSpeed = 2;
 const trafficAcceleration: number = 0.2;
 const trafficFriction = 0.05;
 const trafficRowStart = -200;
-const gameTrafficRowIncrement = -150;
-const trafficRowIncrement = -200;
+const gameTrafficRowIncrement = -175;
+const trafficRowIncrement = gameTrafficRowIncrement;
 
 const laneLookup = new Map<string, number[]>([
   ["10", [0]],

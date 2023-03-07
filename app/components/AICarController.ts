@@ -18,7 +18,7 @@ export default class AICarController {
 
   carsCollided = 0;
 
-  mutationPercent: number = 0.03;
+  mutationPercent: number = 0.1;
   numberOfCars: number = 150;
   canvasWidth: number = 200;
   result: number = 0;
@@ -64,9 +64,11 @@ export default class AICarController {
 
   loadBrains() {
     if (typeof window !== "undefined") {
-      const bestBrainSoFar = localStorage.getItem(
-        "bestBrain" + this.laneCount.toString()
-      );
+      const bestEnvBrain = process.env.NEXT_PUBLIC_BEST_BRAIN;
+      const bestBrainSoFar =
+        this.isGameMode() && bestEnvBrain !== undefined
+          ? bestEnvBrain
+          : localStorage.getItem("bestBrain" + this.laneCount.toString());
       if (bestBrainSoFar) {
         for (let i = 0; i < this.cars.length; i++) {
           this.cars[i].brain = JSON.parse(bestBrainSoFar);
