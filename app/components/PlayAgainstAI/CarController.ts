@@ -30,9 +30,10 @@ export default class CarController {
       30,
       50,
       "KEYS",
-      this.carSpeed
+      this.carSpeed,
+      0.055
     );
-    this.traffic = generateTraffic(gameTrafficHash, this.road);
+    this.traffic = generateTraffic(gameTrafficHash, this.road, true);
     this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
   }
 

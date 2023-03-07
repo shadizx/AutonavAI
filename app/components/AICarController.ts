@@ -51,7 +51,8 @@ export default class AICarController {
       gameTrafficHash.length === 0
         ? generateRandomTrafficHash(this.trafficRows, this.laneCount)
         : gameTrafficHash,
-      this.road
+      this.road,
+      this.isGameMode()
     );
     this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
 
@@ -218,8 +219,11 @@ export default class AICarController {
     this.cars = generateCars(this.road, this.numberOfCars, "AI", this.carSpeed);
     this.bestCar = this.findBestCar();
     this.traffic = generateTraffic(
-      generateRandomTrafficHash(this.trafficRows, this.laneCount),
-      this.road
+      this.gameTrafficHash.length === 0
+        ? generateRandomTrafficHash(this.trafficRows, this.laneCount)
+        : this.gameTrafficHash,
+      this.road,
+      this.isGameMode()
     );
     this.finishLine = generateFinishLine(this.trafficRows, this.canvasWidth);
 

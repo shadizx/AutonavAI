@@ -9,7 +9,8 @@ const trafficSpeed = 2;
 const trafficAcceleration: number = 0.2;
 const trafficFriction = 0.05;
 const trafficRowStart = -200;
-const trafficRowIncrement = -150;
+const gameTrafficRowIncrement = -150;
+const trafficRowIncrement = -200;
 
 const laneLookup = new Map<string, number[]>([
   ["10", [0]],
@@ -50,7 +51,11 @@ export const generateCars = (
   });
 };
 
-export const generateTraffic = (trafficHash: string[], road: Road): Car[] => {
+export const generateTraffic = (
+  trafficHash: string[],
+  road: Road,
+  gameMode = false
+): Car[] => {
   let rowY = trafficRowStart;
   const trafficRows: Car[] = [];
   trafficHash.forEach((row) => {
@@ -68,7 +73,7 @@ export const generateTraffic = (trafficHash: string[], road: Road): Car[] => {
         )
       );
     });
-    rowY += trafficRowIncrement;
+    rowY += gameMode ? gameTrafficRowIncrement : trafficRowIncrement;
   });
   return trafficRows;
 };
