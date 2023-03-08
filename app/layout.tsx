@@ -2,7 +2,19 @@ import "./globals.css";
 
 export const metadata = {
   title: "Autonav AI",
-  description: "AI learns how to drive",
+  description: "Think you can beat an AI self driving car? Try now",
+  openGraph: {
+    title: "Autonav AI",
+    description: "Think you can beat an AI self driving car? Try now",
+    url: "https://autonav-ai.vercel.app/",
+    images: [
+      {
+        url: "https://i.imgur.com/LVls7Cl.png",
+      },
+    ],
+    locale: "en-US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
