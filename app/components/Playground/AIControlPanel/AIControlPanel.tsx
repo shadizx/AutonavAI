@@ -12,7 +12,7 @@ interface AIControlPanelProps {
 
 export default function AIControlPanel({ carController }: AIControlPanelProps) {
   return (
-    <div className="flex flex-wrap self-center justify-center w-64 bg-slate-700 rounded-2xl shadow-2xl mx-8">
+    <div className="flex flex-wrap self-center justify-center w-64 bg-slate-700 rounded-2xl shadow-2xl mx-2">
       <div className="w-full">
         <CarCounter carController={carController} />
       </div>

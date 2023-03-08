@@ -156,7 +156,7 @@ export default class Car {
   }
 
   private loadImage() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     this.image = document.createElement("img");
     let source = "Car";
     if (this.type !== "main") {
